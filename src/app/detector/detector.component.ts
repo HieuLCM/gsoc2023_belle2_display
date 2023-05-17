@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { DetectorLoader } from './detector-loader';
 import { EventDisplayService } from 'phoenix-ui-components';
 import {
-  ClippingSetting,
   Configuration,
   PhoenixMenuNode,
   PresetView,
@@ -56,6 +55,14 @@ export class DetectorComponent implements OnInit {
     );
 
     this.eventDisplay.loadGLTFGeometry(
+      '../../assets/Belle2Geo_ARICH.gltf',
+      undefined,
+      undefined,
+      1,
+      true
+    );
+
+    this.eventDisplay.loadGLTFGeometry(
       '../../assets/Belle2Geo.gltf',
       undefined,
       undefined,
@@ -97,14 +104,6 @@ export class DetectorComponent implements OnInit {
 
     this.eventDisplay.loadGLTFGeometry(
       '../../assets/Belle2Geo_TOP.gltf',
-      undefined,
-      undefined,
-      1,
-      true
-    );
-
-    this.eventDisplay.loadGLTFGeometry(
-      '../../assets/Belle2Geo_ARICH.gltf',
       undefined,
       undefined,
       1,

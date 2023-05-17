@@ -14,9 +14,9 @@ In order to run the application on your local machine, please perform the follow
 ## How to Run
 
 1. Clone this repository to your local machine
-```git clone git@github.com:HieuLCM/1st_evaluation_sphere_cube.git```
+```git clone git@github.com:HieuLCM/Belle2_Web_Display_dum_ver.git```
 2. Change the current directory into the cloned folder
-```cd 1st_evaluation_sphere_cube```
+```cd Belle2_Web_Display_dum_ver```
 3. Run `npm install` to install the necessary dependencies
 4. Run `npm start` or `ng serve` to start the development server
 5. Navigate to `http://localhost:4200/` in your web browser to view the app

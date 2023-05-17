@@ -55,7 +55,7 @@ export class DetectorComponent implements OnInit {
     );
 
     this.eventDisplay.loadGLTFGeometry(
-      '../../assets/Belle2Geo_ARICH.gltf',
+      '../../assets/Belle2Geo.gltf',
       undefined,
       undefined,
       1,
@@ -63,7 +63,7 @@ export class DetectorComponent implements OnInit {
     );
 
     this.eventDisplay.loadGLTFGeometry(
-      '../../assets/Belle2Geo.gltf',
+      '../../assets/Belle2Geo_ARICH.gltf',
       undefined,
       undefined,
       1,

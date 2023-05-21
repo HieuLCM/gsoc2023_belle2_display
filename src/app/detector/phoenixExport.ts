@@ -46,6 +46,10 @@ async function cleanup_geometry(
       node.fVolume.fNodes.arr,
       (node: any) => level < max_level && !matches(node.fName, hide_childern)
     );
+    // recurse to children
+    for (const snode of node.fVolume.fNodes.arr) {
+      cleanup_geometry(snode, hide_childern, max_level, level + 1);
+    }
   }
 }
 
@@ -177,10 +181,10 @@ async function convert_geometry(
   hide_children: any
 ) {
   const scenes = [];
+  cleanup_geometry(obj.fNodes.arr[0], hide_children, max_level);
   for (const [name, entry] of Object.entries<{ [key: string]: [any[], any] }>(
     subparts
   )) {
-    cleanup_geometry(obj.fNodes.arr[0], hide_children, max_level);
     const paths = entry[0];
     const visibility = entry[1];
 

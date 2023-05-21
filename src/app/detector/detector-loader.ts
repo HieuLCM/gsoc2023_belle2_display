@@ -74,7 +74,7 @@ export class DetectorLoader {
     // "BKLM > BWD": [["BKLM.BackwardSector"], 0.2],
   };
 
-  private hide_childern: any = ['ARICH.mirrorPlate'];
+  private hide_childern: any = [];
 
   constructor(fileURL: any) {
     this.fileURL = fileURL;

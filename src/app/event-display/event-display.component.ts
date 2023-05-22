@@ -29,11 +29,11 @@ export class EventDisplayComponent implements OnInit {
 
     const configuration: Configuration = {
       presetViews: [
-        new PresetView('Center View', [300, 50, 0], [0, 0, 0], 'top-cube'),
-        new PresetView('Left View', [0, 0, 550], [0, 0, 0], 'left-cube'),
-        new PresetView('Right View', [0, 0, -500], [0, 0, 0], 'right-cube'),
+        new PresetView('Left View', [0, 0, -500], [0, 0, 0], 'left-cube'),
+        new PresetView('Center View', [-350, 50, 0], [0, 0, 0], 'top-cube'),
+        new PresetView('Right View', [0, 0, 550], [0, 0, 0], 'right-cube'),
       ],
-      defaultView: [330, -150, 200, 0, 0, 0],
+      defaultView: [-350, 80, -20, 0, 0, 0],
       phoenixMenuRoot: this.phoenixMenuRoot,
     };
 

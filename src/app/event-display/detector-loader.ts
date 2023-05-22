@@ -15,7 +15,7 @@ export class DetectorLoader {
     PXD: [[/PXD\.[1234567890].*/], true],
 
     // KLM
-    KLM: [['BKLM.EnvelopeLogical'], false],
+    // KLM: [['BKLM.EnvelopeLogical'], false],
   };
 
   private hide_childern: any = [
@@ -30,7 +30,19 @@ export class DetectorLoader {
     /^logicalCDC_0/,
 
     //TOP
-    // /^TOPEnvelopeModule.*/,
+    /^TOPPrism.*/,
+    /^TOPPMTArray.*/,
+    /^TOPInner.*/,
+    /^TOPOuter.*/,
+    /^TOPBoardStack.*/,
+    /^TOPColdPlate.*/,
+    /^TOPBarSegment.*/,
+    /^TOPMirrorSegment.*/,
+    /^TOPSide.*/,
+    /^TOPHVBoard.*/,
+    /^TOPForward.*/,
+    // /^TOPFront.*/,
+    /^PeekFrame/,
 
     //ARICH
     /ARICH.*/,

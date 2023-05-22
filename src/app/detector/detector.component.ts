@@ -28,8 +28,8 @@ export class DetectorComponent implements OnInit {
 
     const configuration: Configuration = {
       presetViews: [
-        new PresetView('Center View', [1300, 100, 0], [0, 0, 0], 'top-cube'),
         new PresetView('Left View', [0, 250, 1200], [0, 0, 0], 'left-cube'),
+        new PresetView('Center View', [1300, 100, 0], [0, 0, 0], 'top-cube'),
         new PresetView('Right View', [0, 250, -1200], [0, 0, 0], 'right-cube'),
       ],
       defaultView: [1000, -300, 600, 0, 0, 0],

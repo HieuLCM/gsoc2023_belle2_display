@@ -10,6 +10,8 @@ import { EventDisplayComponent } from './event-display/event-display.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoadingComponent } from './loading/loading.component';
+import { ViewToggleComponent } from './view-toggle/view-toggle.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -17,12 +19,14 @@ import { LoadingComponent } from './loading/loading.component';
     DetectorComponent,
     EventDisplayComponent,
     LoadingComponent,
+    ViewToggleComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     PhoenixUIModule,
     BrowserAnimationsModule,
+    MatTooltipModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

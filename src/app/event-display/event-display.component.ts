@@ -5,8 +5,11 @@ import {
   Configuration,
   PhoenixMenuNode,
   PresetView,
+  StateManager,
 } from 'phoenix-event-display';
 import { DetectorLoader } from './detector-loader';
+import * as saveAs from 'file-saver';
+// import * as phoenixMenuConfig from '../../assets/config.json';
 
 @Component({
   selector: 'app-event-display',
@@ -27,13 +30,28 @@ export class EventDisplayComponent implements OnInit {
     // const detectorFile = new DetectorLoader('../../assets/Belle2Geo.root');
     // detectorFile.getData('VGM Root geometry');
 
+    // const eventLoader = new EventLoader('../../assets/mdst-v06-00-00.root');
+
+    // eventLoader.getData('tree', (data: any) => {
+    //   // const replacer = (key: any, value: any) => {
+    //   //   if (typeof value === 'bigint') {
+    //   //     return value.toString();
+    //   //   }
+    //   //   return value;
+    //   // };
+    //   // const fileToSave = new Blob([JSON.stringify(data, replacer)], {
+    //   //   type: 'application/json',
+    //   // });
+    //   // saveAs(fileToSave, 'mdst.json');
+    // })
+
     const configuration: Configuration = {
       presetViews: [
-        new PresetView('Left View', [0, 0, -500], [0, 0, 0], 'left-cube'),
-        new PresetView('Center View', [-350, 50, 0], [0, 0, 0], 'top-cube'),
-        new PresetView('Right View', [0, 0, 550], [0, 0, 0], 'right-cube'),
+        new PresetView('Left View', [0, 0, -1000], [0, 0, 0], 'left-cube'),
+        new PresetView('Center View', [-1000, 50, 0], [0, 0, 0], 'top-cube'),
+        new PresetView('Right View', [0, 0, 1200], [0, 0, 0], 'right-cube'),
       ],
-      defaultView: [-350, 80, -20, 0, 0, 0],
+      defaultView: [0, 0, 1000, 0, 0, 0],
       phoenixMenuRoot: this.phoenixMenuRoot,
     };
 
@@ -42,14 +60,27 @@ export class EventDisplayComponent implements OnInit {
       '../../assets/Belle2Geo_EventDisplay.gltf',
       undefined,
       undefined,
-      1,
+      3,
       true
     );
+
     this.eventDisplay
       .getLoadingManager()
       .addProgressListener((progress) => (this.loadingProgress = progress));
-    this.eventDisplay
-      .getLoadingManager()
-      .addLoadListenerWithCheck(() => (this.loaded = true));
+    this.eventDisplay.getLoadingManager().addLoadListenerWithCheck(() => {
+      this.eventDisplay.getUIManager().toggleOrthographicView(true);
+      this.loaded = true;
+      // const urlConfig = this.eventDisplay
+      // .getURLOptionsManager()
+      // .getURLOptions()
+      // .get('config');
+
+      // if (!urlConfig) {
+      //   this.loaded = true
+      // // Load the defaut config from JSON file
+      //   const stateManager = new StateManager();
+      //   stateManager.loadStateFromJSON(phoenixMenuConfig);
+      // }
+    });
   }
 }

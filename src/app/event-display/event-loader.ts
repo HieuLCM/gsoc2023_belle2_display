@@ -42,7 +42,7 @@ export class EventLoader extends PhoenixLoader {
 
     this.fileData = {};
 
-    this.branches = ['ECLClusters'];
+    this.branches = [];
   }
 
   public async getData(treeName: string, onHandleData: (data: any) => void) {
@@ -66,6 +66,7 @@ export class EventLoader extends PhoenixLoader {
         };
       }
     }
+    // Save fileData by input the appropriate onHandleData function
     onHandleData(this.fileData);
     return this.fileData;
   }

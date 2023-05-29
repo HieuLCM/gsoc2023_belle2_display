@@ -6,28 +6,57 @@ export class DetectorLoader {
 
   private subparts: any = {
     // TOP_Envelope
-    TOP: [['TOPEnvelopeModule'], 0.03],
+    TOP: [['TOPEnvelopeModule'], { visible: true, opacity: 0.05 }],
+
+    //CDC
+    CDC: [
+      [/^logicalCDC_0/],
+      { visible: false, opacity: 0.05 },
+      { vislevel: 1 },
+    ],
+
+    //EKLM
+    EKLM: [['__'], false], //turn off EKLM in Menu
+    'EKLM > FWD': [
+      [/^Section_1_1.*/],
+      { visible: false, opacity: 0.1 },
+      { vislevel: 2 },
+    ],
+    'EKLM > BWD': [
+      [/^Section_2_2.*/],
+      { visible: false, opacity: 0.1 },
+      { vislevel: 2 },
+    ],
 
     //SVD
     SVD: [[/SVD\.[1234567890].*/], true],
 
     // PXD
-    PXD: [[/PXD\.[1234567890].*/], true],
+    PXD: [[/PXD\.[1234567890].*/], true, { color: { r: 1, g: 0.1, b: 0.1 } }],
 
-    // KLM
-    // KLM: [['BKLM.EnvelopeLogical'], false],
+    // BKLM
+    BKLM: [
+      ['BKLM.EnvelopeLogical'],
+      { visible: false, opacity: 0.1 },
+      { vislevel: 1 },
+    ],
+
+    // ARICH
+    ARICH: [[/ARICH.*/], { visible: false, opacity: 0.05 }, { vislevel: 1 }],
   };
 
-  private hide_childern: any = [
+  private hide_children: any = [
     //BKLM
-    /BKLM\.EnvelopeLogical/,
-
+    // /BKLM\.EnvelopeLogical/,
+    /^BKLM.CapLogical.*/,
+    /^BKLM.ChimneyCapLogical.*/,
+    /^BKLM.Inner.*/,
     //EKLM
-    /^Layer_.*/,
-    /^ShieldLayer.*/,
+    // /^Layer_.*/,
+    // /^ShieldLayer.*/,
 
     //CDC
-    /^logicalCDC_0/,
+    // /^logicalCDC_0/,
 
     //TOP
     /^TOPPrism.*/,
@@ -45,7 +74,7 @@ export class DetectorLoader {
     /^PeekFrame/,
 
     //ARICH
-    /ARICH.*/,
+    // /ARICH.*/,
 
     //PXD
     /^PXD\.Switcher.*/,
@@ -81,7 +110,7 @@ export class DetectorLoader {
       'Belle2Geo_EventDisplay.gltf',
       10,
       this.subparts,
-      this.hide_childern,
+      this.hide_children,
       objName
     );
     return this.fileData;

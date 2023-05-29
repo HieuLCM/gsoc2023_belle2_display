@@ -37,18 +37,18 @@ function filterArrayPlace(array: any, condition: any, thisArg?: any) {
 
 async function cleanup_geometry(
   node: any,
-  hide_childern: any,
+  hide_children: any,
   max_level: number,
   level: number = 0
 ) {
   if (node.fVolume.fNodes) {
     filterArrayPlace(
       node.fVolume.fNodes.arr,
-      (node: any) => level < max_level && !matches(node.fName, hide_childern)
+      (node: any) => level < max_level && !matches(node.fName, hide_children)
     );
     // recurse to children
     for (const snode of node.fVolume.fNodes.arr) {
-      cleanup_geometry(snode, hide_childern, max_level, level + 1);
+      cleanup_geometry(snode, hide_children, max_level, level + 1);
     }
   }
 }
@@ -105,6 +105,31 @@ function keep_only_subpart(volume: any, paths: any) {
     }
   }
   return anyfound;
+}
+
+function setColor(parent: any, color: any) {
+  if (!parent) return;
+  if (parent?.children?.length === 0) {
+    if (parent?.isMesh) {
+      if (parent?.material?.color) {
+        parent.material.color.r = color.r;
+        parent.material.color.g = color.g;
+        parent.material.color.b = color.b;
+      }
+    }
+    return;
+  }
+  for (var child of parent.children) {
+    if (child?.isMesh) {
+      if (child?.material?.color) {
+        child.material.color.r = color.r;
+        child.material.color.g = color.g;
+        child.material.color.b = color.b;
+      }
+    } else {
+      setColor(child, color);
+    }
+  }
 }
 
 async function deduplicate(gltf: any) {
@@ -182,31 +207,40 @@ async function convert_geometry(
 ) {
   const scenes = [];
   cleanup_geometry(obj.fNodes.arr[0], hide_children, max_level);
-  for (const [name, entry] of Object.entries<{ [key: string]: [any[], any] }>(
+  for (const [name, entry] of Object.entries<{ [key: string]: any }>(
     subparts
   )) {
     const paths = entry[0];
     const visibility = entry[1];
+    const option = entry?.[2];
 
     setVisible(obj.fNodes.arr[0]);
     keep_only_subpart(obj.fMasterVolume, paths);
     var scene = new THREE.Scene();
     scene.name = name;
-    var childern = build(obj, {
-      dflt_colors: true,
-      vislevel: 10,
-      numfaces: 10000000,
-      numnodes: 500000,
+    var children = build(obj, {
+      dflt_colors:
+        typeof option?.dflt_colors == 'boolean' ? option?.dflt_colors : true,
+      vislevel: option?.vislevel ?? 10,
+      numfaces: option?.numfaces ?? 10000000,
+      numnodes: option?.numnodes ?? 500000,
     });
-    scene.children.push(childern);
+    if (option?.color) {
+      setColor(children, option.color);
+    }
+    scene.children.push(children);
     if (typeof visibility == 'boolean') {
       scene.userData = { visible: visibility };
     } else {
-      scene.userData = { visible: true, opacity: visibility };
+      scene.userData = {
+        visible: visibility.visible,
+        opacity: visibility.opacity,
+      };
     }
 
     scenes.push(scene);
   }
+  console.log(scenes);
   await saveGeometry(scenes, outputFile);
 }
 

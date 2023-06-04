@@ -2,6 +2,13 @@ import { PhoenixLoader } from 'phoenix-event-display/dist/loaders/phoenix-loader
 import { openFile } from 'jsroot';
 import { TSelector, treeProcess } from 'jsroot/tree';
 
+const replacer = (key: any, value: any) => {
+  if (typeof value === 'bigint') {
+    return value.toString();
+  }
+  return value;
+};
+
 class TEventSelector extends TSelector {
   /** constructor */
   private branch: string;
@@ -18,7 +25,11 @@ class TEventSelector extends TSelector {
 
   /** function called for every entry */
   Process(entryNum: any) {
-    this.branchData.push({ [this.branch]: this['tgtobj'][this.branch] });
+    this.branchData.push({
+      [this.branch]: JSON.parse(
+        JSON.stringify(this['tgtobj'][this.branch], replacer)
+      ),
+    });
   }
 
   /** function called when processing finishes */
@@ -62,7 +73,10 @@ export class EventLoader extends PhoenixLoader {
       for (let j = 0; j < this.branches.length; j++) {
         this.fileData = {
           ...this.fileData,
-          [i]: { ...this.fileData[i], ...allBranchData[j][i] },
+          [`Event ${i}`]: {
+            ...this.fileData[`Event ${i}`],
+            ...allBranchData[j][i],
+          },
         };
       }
     }

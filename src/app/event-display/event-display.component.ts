@@ -9,6 +9,7 @@ import {
 } from 'phoenix-event-display';
 import { DetectorLoader } from './detector-loader';
 import * as saveAs from 'file-saver';
+import { eventConvertor } from './event-convertor';
 // import * as phoenixMenuConfig from '../../assets/config.json';
 
 @Component({
@@ -30,29 +31,34 @@ export class EventDisplayComponent implements OnInit {
     // const detectorFile = new DetectorLoader('../../assets/Belle2Geo.root');
     // detectorFile.getData('VGM Root geometry');
 
-    // const eventLoader = new EventLoader('../../assets/mdst-v06-00-00.root');
+    const eventLoader = new EventLoader('../../assets/mdst-v06-00-00.root');
 
-    // eventLoader.getData('tree', (data: any) => {
-    //   // const replacer = (key: any, value: any) => {
-    //   //   if (typeof value === 'bigint') {
-    //   //     return value.toString();
-    //   //   }
-    //   //   return value;
-    //   // };
-    //   // const fileToSave = new Blob([JSON.stringify(data, replacer)], {
-    //   //   type: 'application/json',
-    //   // });
-    //   // saveAs(fileToSave, 'mdst.json');
-    // })
-
+    eventLoader.getData('tree', (data: any) => {
+      // const replacer = (key: any, value: any) => {
+      //   if (typeof value === 'bigint') {
+      //     return value.toString();
+      //   }
+      //   return value;
+      // };
+      // const fileToSave = new Blob([JSON.stringify(data, replacer)], {
+      //   type: 'application/json',
+      // });
+      // saveAs(fileToSave, 'mdst.json');
+    });
+    // eventConvertor()
     const configuration: Configuration = {
       presetViews: [
         new PresetView('Left View', [0, 0, -1000], [0, 0, 0], 'left-cube'),
         new PresetView('Center View', [-1000, 50, 0], [0, 0, 0], 'top-cube'),
         new PresetView('Right View', [0, 0, 1200], [0, 0, 0], 'right-cube'),
       ],
-      defaultView: [0, 0, 1000, 0, 0, 0],
+      defaultView: [-750, 0, 500, 0, 0, 0],
       phoenixMenuRoot: this.phoenixMenuRoot,
+      forceColourTheme: 'dark',
+      defaultEventFile: {
+        eventFile: '../../assets/mdst_event.json',
+        eventType: 'json',
+      },
     };
 
     this.eventDisplay.init(configuration);
@@ -60,7 +66,7 @@ export class EventDisplayComponent implements OnInit {
       '../../assets/Belle2Geo_EventDisplay.gltf',
       undefined,
       undefined,
-      3,
+      2,
       true
     );
 
@@ -68,7 +74,6 @@ export class EventDisplayComponent implements OnInit {
       .getLoadingManager()
       .addProgressListener((progress) => (this.loadingProgress = progress));
     this.eventDisplay.getLoadingManager().addLoadListenerWithCheck(() => {
-      this.eventDisplay.getUIManager().toggleOrthographicView(true);
       this.loaded = true;
       // const urlConfig = this.eventDisplay
       // .getURLOptionsManager()

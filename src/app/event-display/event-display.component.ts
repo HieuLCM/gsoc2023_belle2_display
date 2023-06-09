@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EventLoader } from './event-loader';
-import { EventDisplayService } from 'phoenix-ui-components';
+import { EventDataFormat, EventDataImportOption, EventDisplayService } from 'phoenix-ui-components';
 import {
   Configuration,
   PhoenixMenuNode,
@@ -10,6 +10,9 @@ import {
 import { DetectorLoader } from './detector-loader';
 import * as saveAs from 'file-saver';
 import { eventConvertor } from './event-convertor';
+import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter';
+import { Belle2Loader } from 'src/loaders/event-data-loaders';
+// import * as mdst from '../../assets/mdst.json'
 // import * as phoenixMenuConfig from '../../assets/config.json';
 
 @Component({
@@ -30,37 +33,39 @@ export class EventDisplayComponent implements OnInit {
   ngOnInit() {
     // const detectorFile = new DetectorLoader('../../assets/Belle2Geo.root');
     // detectorFile.getData('VGM Root geometry');
+    const belle2Loader = new Belle2Loader()
+    // const eventLoader = new EventLoader('../../assets/mdst-v06-00-00.root');
 
-    const eventLoader = new EventLoader('../../assets/mdst-v06-00-00.root');
-
-    eventLoader.getData('tree', (data: any) => {
-      // const replacer = (key: any, value: any) => {
-      //   if (typeof value === 'bigint') {
-      //     return value.toString();
-      //   }
-      //   return value;
-      // };
-      // const fileToSave = new Blob([JSON.stringify(data, replacer)], {
-      //   type: 'application/json',
-      // });
-      // saveAs(fileToSave, 'mdst.json');
-    });
+    // eventLoader.getData('tree', (data: any) => {
+    //   // const replacer = (key: any, value: any) => {
+    //   //   if (typeof value === 'bigint') {
+    //   //     return value.toString();
+    //   //   }
+    //   //   return value;
+    //   // };
+    //   // const fileToSave = new Blob([JSON.stringify(data, replacer)], {
+    //   //   type: 'application/json',
+    //   // });
+    //   // saveAs(fileToSave, 'mdst.json');
+    // });
     // eventConvertor()
     const configuration: Configuration = {
+      eventDataLoader: belle2Loader,
       presetViews: [
         new PresetView('Left View', [0, 0, -1000], [0, 0, 0], 'left-cube'),
         new PresetView('Center View', [-1000, 50, 0], [0, 0, 0], 'top-cube'),
         new PresetView('Right View', [0, 0, 1200], [0, 0, 0], 'right-cube'),
       ],
-      defaultView: [-750, 0, 500, 0, 0, 0],
+      defaultView: [820, -200, 530, 0, 0, 0],
       phoenixMenuRoot: this.phoenixMenuRoot,
       forceColourTheme: 'dark',
-      defaultEventFile: {
-        eventFile: '../../assets/mdst_event.json',
-        eventType: 'json',
-      },
+      // defaultEventFile: {
+      //   eventFile: '../../assets/mdst_event.json',
+      //   eventType: 'json',
+      // },
     };
 
+    
     this.eventDisplay.init(configuration);
     this.eventDisplay.loadGLTFGeometry(
       '../../assets/Belle2Geo_EventDisplay.gltf',
@@ -69,6 +74,21 @@ export class EventDisplayComponent implements OnInit {
       2,
       true
     );
+
+    fetch('../../assets/mdst.json').then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then((mdst) => {
+      const mdstEventData = belle2Loader.getAllEventData(mdst)
+    
+      this.eventDisplay.parsePhoenixEvents(mdstEventData)
+      console.log(mdstEventData)
+
+    })
+
 
     this.eventDisplay
       .getLoadingManager()

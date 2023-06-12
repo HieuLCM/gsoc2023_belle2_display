@@ -16,7 +16,7 @@ export class DetectorLoader {
     ],
 
     //EKLM
-    EKLM: [['__'], false], //turn off EKLM in Menu
+    // EKLM: [['__'], false], //turn off EKLM in Menu
     'EKLM > FWD': [
       [/^Section_1_1.*/],
       { visible: false, opacity: 0.1 },
@@ -29,10 +29,18 @@ export class DetectorLoader {
     ],
 
     //SVD
-    SVD: [[/SVD\.[1234567890].*/], true],
+    SVD: [
+      [/SVD\.[1234567890].*/],
+      { visible: true, opacity: 0.5 },
+      { vislevel: 2 },
+    ],
 
     // PXD
-    PXD: [[/PXD\.[1234567890].*/], true, { color: { r: 1, g: 0.1, b: 0.1 } }],
+    PXD: [
+      [/PXD\.[1234567890].*/],
+      { visible: true, opacity: 0.5 },
+      { vislevel: 2, color: { r: 1, g: 0.1, b: 0.1 } },
+    ],
 
     // BKLM
     BKLM: [

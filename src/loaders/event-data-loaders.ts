@@ -1,81 +1,86 @@
-import { PhoenixLoader } from "phoenix-event-display";
-import { KLMClusterObject } from "./objects/klmCluster";
+import { PhoenixLoader } from 'phoenix-event-display';
+import { KLMClusterObject } from './objects/klmCluster';
 
-import * as THREE from 'three'
+import * as THREE from 'three';
 
 export class Belle2Loader extends PhoenixLoader {
-    private data: any;
+  private data: any;
+  private scale: number = 2;
 
-    constructor() {
-        super()
-        this.data = {}
+  constructor() {
+    super();
+    this.data = {};
+  }
+
+  protected override loadObjectTypes(eventData: any) {
+    super.loadObjectTypes(eventData);
+    if (eventData.KLMClusters) {
+      this.addObjectType(
+        eventData.KLMClusters,
+        KLMClusterObject.getKLMCluster,
+        'KLMCLusters'
+      );
+    }
+  }
+
+  public getEventData(): any {
+    const eventData: any = {
+      CaloClusters: {},
+      KLMClusters: {},
+      Tracks: {},
+    };
+
+    eventData.KLMClusters = this.getKLMClusters();
+    eventData.CaloClusters = this.getCaloClusters();
+    eventData.Tracks = this.getTracks();
+    for (const objectType of ['CaloClusters', 'KLMClusters', 'Tracks']) {
+      if (Object.keys(eventData[objectType]).length === 0) {
+        eventData[objectType] = undefined;
+      }
     }
 
-    protected override loadObjectTypes(eventData: any) {
-        super.loadObjectTypes(eventData);
-        if (eventData.KLMClusters) {
-            this.addObjectType(
-                eventData.KLMClusters,
-                KLMClusterObject.getKLMCluster,
-                'KLMCLusters'
-            )
-        }
+    return eventData;
+  }
+
+  public getAllEventData(allEventsDataFromJSON: any): any {
+    const allEventsData: any = {};
+    for (let i = 1; i < Object.keys(allEventsDataFromJSON).length; i++) {
+      this.data = allEventsDataFromJSON?.[`Event ${i}`];
+      allEventsData[`Event ${i}`] = this.getEventData();
     }
+    return allEventsData;
+  }
 
-    public getEventData(): any {
-        const eventData: any = {
-            CaloClusters: {},
-            KLMClusters: {}
-        }
-
-        eventData.KLMClusters = this.getKLMClusters();
-        eventData.CaloClusters = this.getCaloClusters();
-        for (const objectType of [
-            "CaloClusters",
-            "KLMClusters"
-        ]) {
-            if (Object.keys(eventData[objectType]).length === 0) {
-                eventData[objectType] = undefined
-            } 
-        }
-
-        return eventData
+  private getKLMClusters(): any {
+    const klmClusters: any = {};
+    const clusterNum = this.data.KLMClusters.length;
+    if (clusterNum !== 0) {
+      for (let i = 0; i < clusterNum; i++) {
+        klmClusters[`Cluster_${i}`] = [this.data.KLMClusters[i]];
+      }
     }
+    return klmClusters;
+  }
 
-    public getAllEventData(allEventsDataFromJSON: any): any {
-        const allEventsData: any = {}
-        for (let i = 0; i < Object.keys(allEventsDataFromJSON).length-1; i++) {
-            this.data = allEventsDataFromJSON?.[i]
-            allEventsData[`Event ${i}`] = this.getEventData()
-        }
-        console.log(allEventsData)
-        return allEventsData
-    }
+  private getCaloClusters(): any {
+    let caloClusters: any = {};
+    caloClusters['ECLClusters'] = this.data.ECLClusters.map((cluster: any) => ({
+      energy: 10000 * cluster?.energy,
+      eta: -Math.log(Math.tan(cluster?.theta / 2)),
+      phi: cluster?.phi,
+      radius: 2 * cluster?.r + (10000 * cluster?.energy * 0.03) / 2.9,
+      side: 6,
+      color: '#FF5533',
+    }));
 
-    private getKLMClusters(): any {
-        const klmCluster: any = {}
-        const clusterNum = this.data.KLMClusters.length
-        if (clusterNum !== 0) {
-            for (let i = 0; i<clusterNum; i++) {
-                klmCluster[`Cluster_${i}`] = [this.data.KLMClusters[i]]
-            }
-        }
-        return klmCluster
-    }
+    return caloClusters;
+  }
 
-    private getCaloClusters(): any {
-        let caloCluster: any = {};
-        caloCluster["ECLClusters"] = this.data.ECLClusters.map((cluster: any) => ({
-            energy: 10000 * Math.exp(cluster?.['m_logEnergy']),
-            eta: -Math.log(Math.tan(cluster?.['m_theta'] / 2)),
-            phi: cluster?.['m_phi'],
-            radius:
-                2 * cluster?.m_r +
-                (10000 * Math.exp(cluster?.['m_logEnergy']) * 0.03) / 2.9,
-            side: 6,
-            color: '#FF5533',
-            }))
-
-            return caloCluster
-    }
+  private getTracks(): any {
+    let tracks: any = {};
+    tracks['Reconstructed'] = this.data.Tracks.map((track: any) => ({
+      pos: track.pos.map((row: any) => row.map((val: any) => val * this.scale)),
+    }));
+    return tracks;
+  }
 }

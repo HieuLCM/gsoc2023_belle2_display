@@ -1,16 +1,16 @@
 import * as THREE from 'three';
 
-// const getTheta = (vector: THREE.Vector3) => {
-//     return Math.atan(vector.y/ vector.x)
-// }
+const getPhi = (vector: THREE.Vector3) => {
+    return Math.atan(vector.y/ vector.x)
+}
 
-// const getR = (vector: THREE.Vector3) => {
-//     return Math.sqrt(vector.x*vector.x + vector.y*vector.y + vector.z*vector.z)
-// }
+const getR = (vector: THREE.Vector3) => {
+    return Math.sqrt(vector.x*vector.x + vector.y*vector.y + vector.z*vector.z)
+}
 
-// const getPhi = (vector: THREE.Vector3) => {
-//     return Math.atan(Math.sqrt(vector.x*vector.x + vector.y*vector.y)/ vector.z)
-// }
+const getTheta = (vector: THREE.Vector3) => {
+    return Math.atan(Math.sqrt(vector.x*vector.x + vector.y*vector.y)/ vector.z)
+}
 
 function clusterCreator(
   o: THREE.Vector3,
@@ -158,6 +158,8 @@ export class KLMClusterObject {
       // const offset = c / 2.0 + Math.PI
 
       // const phi = Math.floor((getPhi(a.clone()) + offset) / c) * c - Math.PI
+      // const theta = getTheta(a.clone())
+      // const lenA = getR(a.clone())
 
       let perp = b.clone().cross(a);
 

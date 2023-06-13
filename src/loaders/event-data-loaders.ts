@@ -79,7 +79,14 @@ export class Belle2Loader extends PhoenixLoader {
   private getTracks(): any {
     let tracks: any = {};
     tracks['Reconstructed'] = this.data.Tracks.map((track: any) => ({
+      charge: track.charge,
+      color: track.charge ? track.charge === 1.0 ? 0x000000 : 0x014A00 : 0xFFFFFF,
       pos: track.pos.map((row: any) => row.map((val: any) => val * this.scale)),
+      d0: track.d0,
+      z0 : track.z0,
+      phi: track.phi0,
+      omega: track.omega,
+      tanLambda: track.tanLambda
     }));
     return tracks;
   }

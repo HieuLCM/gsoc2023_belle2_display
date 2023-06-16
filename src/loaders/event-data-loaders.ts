@@ -1,4 +1,4 @@
-import { PhoenixLoader } from 'phoenix-event-display';
+import { PhoenixLoader, PhoenixObjects } from 'phoenix-event-display';
 import { KLMClusterObject } from './objects/klmCluster';
 
 import * as THREE from 'three';
@@ -21,6 +21,13 @@ export class Belle2Loader extends PhoenixLoader {
         'KLMCLusters'
       );
     }
+    if (eventData.MCParticles) {
+      this.addObjectType(
+        eventData.MCParticles,
+        PhoenixObjects.getTrack,
+        "MCParticles"
+      )
+    }
   }
 
   public getEventData(): any {
@@ -33,7 +40,7 @@ export class Belle2Loader extends PhoenixLoader {
     eventData.KLMClusters = this.getKLMClusters();
     eventData.CaloClusters = this.getCaloClusters();
     eventData.Tracks = this.getTracks();
-    for (const objectType of ['CaloClusters', 'KLMClusters', 'Tracks']) {
+    for (const objectType of ['CaloClusters', 'KLMClusters', 'Tracks', "MCParticles"]) {
       if (Object.keys(eventData[objectType]).length === 0) {
         eventData[objectType] = undefined;
       }
@@ -56,7 +63,7 @@ export class Belle2Loader extends PhoenixLoader {
     const clusterNum = this.data.KLMClusters.length;
     if (clusterNum !== 0) {
       for (let i = 0; i < clusterNum; i++) {
-        klmClusters[`Cluster_${i}`] = [this.data.KLMClusters[i]];
+        klmClusters[`KLMCluster_${i}`] = [this.data.KLMClusters[i]];
       }
     }
     return klmClusters;
@@ -78,7 +85,7 @@ export class Belle2Loader extends PhoenixLoader {
 
   private getTracks(): any {
     let tracks: any = {};
-    tracks['Reconstructed'] = this.data.Tracks.map((track: any) => ({
+    tracks['FittedTrack'] = this.data.Tracks.map((track: any) => ({
       charge: track.charge,
       color: track.charge ? track.charge === 1.0 ? 0x000000 : 0x014A00 : 0xFFFFFF,
       pos: track.pos.map((row: any) => row.map((val: any) => val * this.scale)),
@@ -89,5 +96,13 @@ export class Belle2Loader extends PhoenixLoader {
       tanLambda: track.tanLambda
     }));
     return tracks;
+  }
+
+  private getMCParticle(): any {
+    let particles: any = {};
+    particles['ReconstructedTrack'] = this.data.MCParticles.map((particle: any) => ({
+      charge: particle.charge,
+      pos: particle.pos.map((row: any) => row.map((val: any) => val * this.scale)),
+    }))
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EventLoader } from './event-loader';
+import { EventLoader } from '../../loaders/event-loader';
 import {
   EventDataFormat,
   EventDataImportOption,
@@ -9,13 +9,14 @@ import {
   Configuration,
   PhoenixMenuNode,
   PresetView,
-  StateManager,
+  StateManager
 } from 'phoenix-event-display';
 import { DetectorLoader } from './detector-loader';
 import * as saveAs from 'file-saver';
 import { eventConvertor } from './event-convertor';
 import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter';
 import { Belle2Loader } from 'src/loaders/event-data-loaders';
+import { Color } from 'three';
 // import * as mdst from '../../assets/mdst.json'
 // import * as phoenixMenuConfig from '../../assets/config.json';
 
@@ -38,6 +39,7 @@ export class EventDisplayComponent implements OnInit {
     // const detectorFile = new DetectorLoader('../../assets/Belle2Geo.root');
     // detectorFile.getData('VGM Root geometry');
     const belle2Loader = new Belle2Loader();
+
     // const eventLoader = new EventLoader('../../assets/mdst-v06-00-00.root');
 
     // eventLoader.getData('tree', (data: any) => {
@@ -87,7 +89,7 @@ export class EventDisplayComponent implements OnInit {
       })
       .then((mdst) => {
         const mdstEventData = belle2Loader.getAllEventData(mdst);
-
+        
         this.eventDisplay.parsePhoenixEvents(mdstEventData);
         console.log(mdstEventData);
       });

@@ -27,34 +27,34 @@ export class MCParticleObject {
     const tubeMaterial = new MeshToonMaterial({
       color: color,
       transparent: true,
-      opacity: 0,
+      opacity: 0.01,
     });
     const tubeObject = new Mesh(tubeGeometry, tubeMaterial);
 
     const lineGeometry = new BufferGeometry().setFromPoints(points);
     const lineMaterial = new LineDashedMaterial({
       color: color,
+      dashSize: 2,
+      gapSize: 1,
     });
     const lineObject = new Line(lineGeometry, lineMaterial);
     lineObject.computeLineDistances();
-    lineObject.userData = Object.assign(
-      {},
-      {
-        color: mcParticleParams.color,
-        charge: mcParticleParams.charge,
-        name: mcParticleParams.name,
-        PDG: mcParticleParams.PDF,
-      }
-    );
-    lineObject.name = 'MCParticle';
 
-    const object = new Group();
+    const trackObject = new Group();
 
-    object.add(tubeObject);
-    object.add(lineObject);
+    trackObject.add(tubeObject);
+    trackObject.add(lineObject);
+
+    for (const object of [tubeObject, trackObject, lineObject]) {
+      object.userData = Object.assign(
+        {},
+        { ...mcParticleParams, pos: undefined }
+      );
+      object.name = 'MCParticle';
+    }
 
     mcParticleParams.uuid = tubeObject.uuid;
 
-    return object;
+    return trackObject;
   }
 }

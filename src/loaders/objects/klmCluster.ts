@@ -107,7 +107,7 @@ function clusterCreator(
     new THREE.MeshPhongMaterial({
       color: 0x3a5311,
       opacity: 0.7,
-      // transparent: true,
+      transparent: true,
       side: THREE.DoubleSide,
     })
   );
@@ -118,7 +118,7 @@ function clusterCreator(
     new THREE.LineBasicMaterial({
       color: 0xffffff,
       opacity: 0.7,
-      // transparent: true,
+      transparent: true,
     })
   );
 
@@ -208,11 +208,8 @@ export class KLMClusterObject {
         klmClusterParams
       );
       scene.add(cluster);
-      if (i === 0) {
-        klmClusterParams.uuid = cluster.uuid;
-      }
     }
-
+    klmClusterParams.uuid = scene.uuid;
     return scene;
   }
 }

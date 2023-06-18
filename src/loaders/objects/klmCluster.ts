@@ -1,16 +1,20 @@
 import * as THREE from 'three';
 
 const getPhi = (vector: THREE.Vector3) => {
-    return Math.atan(vector.y/ vector.x)
-}
+  return Math.atan(vector.y / vector.x);
+};
 
 const getR = (vector: THREE.Vector3) => {
-    return Math.sqrt(vector.x*vector.x + vector.y*vector.y + vector.z*vector.z)
-}
+  return Math.sqrt(
+    vector.x * vector.x + vector.y * vector.y + vector.z * vector.z
+  );
+};
 
 const getTheta = (vector: THREE.Vector3) => {
-    return Math.atan(Math.sqrt(vector.x*vector.x + vector.y*vector.y)/ vector.z)
-}
+  return Math.atan(
+    Math.sqrt(vector.x * vector.x + vector.y * vector.y) / vector.z
+  );
+};
 
 function clusterCreator(
   o: THREE.Vector3,
@@ -204,7 +208,11 @@ export class KLMClusterObject {
         klmClusterParams
       );
       scene.add(cluster);
+      if (i === 0) {
+        klmClusterParams.uuid = cluster.uuid;
+      }
     }
+
     return scene;
   }
 }

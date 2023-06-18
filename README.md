@@ -1,6 +1,6 @@
-# Belle2 Dummy Version
+# Belle2 GSoC 2023
 
-This Angular CLI web app displays a Belle2 detector using Phoenix, a TypeScript-based event display framework.
+This Angular CLI web app displays a Belle2 event using Phoenix, a TypeScript-based event display framework.
 <br>
 The web app has been deployed and can be accessed through [belle2-detector-dummy-hieu-gsoc.netlify.app](https://belle2-detector-dummy-hieu-gsoc.netlify.app/)
 

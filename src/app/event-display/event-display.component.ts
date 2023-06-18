@@ -9,7 +9,7 @@ import {
   Configuration,
   PhoenixMenuNode,
   PresetView,
-  StateManager
+  StateManager,
 } from 'phoenix-event-display';
 import { DetectorLoader } from './detector-loader';
 import * as saveAs from 'file-saver';
@@ -89,7 +89,7 @@ export class EventDisplayComponent implements OnInit {
       })
       .then((mdst) => {
         const mdstEventData = belle2Loader.getAllEventData(mdst);
-        
+
         this.eventDisplay.parsePhoenixEvents(mdstEventData);
         console.log(mdstEventData);
       });

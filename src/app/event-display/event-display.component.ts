@@ -35,7 +35,7 @@ export class EventDisplayComponent implements OnInit {
 
   constructor(private eventDisplay: EventDisplayService) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     // const detectorFile = new DetectorLoader('../../assets/Belle2Geo.root');
     // detectorFile.getData('VGM Root geometry');
     const belle2Loader = new Belle2Loader();
@@ -80,19 +80,30 @@ export class EventDisplayComponent implements OnInit {
       true
     );
 
-    fetch('../../assets/mdst_data.json')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then((mdst) => {
-        const mdstEventData = belle2Loader.getAllEventData(mdst);
+    // fetch('../../assets/mdst_data.json')
+    //   .then((response) => {
+    //     if (!response.ok) {
+    //       throw new Error('Network response was not ok');
+    //     }
+    //     return response.json();
+    //   })
+    //   .then((mdst) => {
+    //     const mdstEventData = belle2Loader.getAllEventData(mdst);
 
-        this.eventDisplay.parsePhoenixEvents(mdstEventData);
-        console.log(mdstEventData);
-      });
+    //     this.eventDisplay.parsePhoenixEvents(mdstEventData);
+    //   });
+
+    try {
+      const response = await fetch('../../assets/mdst_data.json');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const mdst = await response.json();
+      const mdstEventData = belle2Loader.getAllEventData(mdst);
+      this.eventDisplay.parsePhoenixEvents(mdstEventData);
+    } catch (error) {
+      console.error(error);
+    }
 
     this.eventDisplay
       .getLoadingManager()

@@ -34,8 +34,8 @@ export class MCParticleObject {
     const lineGeometry = new BufferGeometry().setFromPoints(points);
     const lineMaterial = new LineDashedMaterial({
       color: color,
-      dashSize: 2,
-      gapSize: 1,
+      dashSize: 3,
+      gapSize: 2,
     });
     const lineObject = new Line(lineGeometry, lineMaterial);
     lineObject.computeLineDistances();

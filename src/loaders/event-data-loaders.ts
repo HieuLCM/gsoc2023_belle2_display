@@ -119,19 +119,22 @@ export class Belle2Loader extends PhoenixLoader {
     let particles: any = {};
     let collection: any[] = [];
     this.data?.MCParticles.forEach((particle: any) => {
-      if (!collection.includes(particle.name)) {
-        collection.push(particle.name);
-        particles[particle.name] = [];
+      if (particle?.seen?.length) {
+        if (!collection.includes(particle.name)) {
+          collection.push(particle.name);
+          particles[particle.name] = [];
+        }
+        particles[particle.name].push({
+          name: particle.name,
+          charge: particle.charge,
+          pos: particle.pos.map((row: any) =>
+            row.map((val: any) => val * this.scale)
+          ),
+          PDG: particle.PDG,
+          color: this.getParticleColor(particle.PDG),
+          seen: particle.seen,
+        });
       }
-      particles[particle.name].push({
-        name: particle.name,
-        charge: particle.charge,
-        pos: particle.pos.map((row: any) =>
-          row.map((val: any) => val * this.scale)
-        ),
-        PDG: particle.PDG,
-        color: this.getParticleColor(particle.PDG),
-      });
     });
 
     // particles['ReconstructedTrack'] = this.data?.MCParticles.map((particle: any) => ({

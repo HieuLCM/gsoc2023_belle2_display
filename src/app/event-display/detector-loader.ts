@@ -16,7 +16,7 @@ export class DetectorLoader {
     ],
 
     //EKLM
-    // EKLM: [['__'], false], //turn off EKLM in Menu
+    EKLM: [['__'], false], //turn off EKLM in Menu
     'EKLM > FWD': [
       [/^Section_1_1.*/],
       { visible: false, opacity: 0.1 },

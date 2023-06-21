@@ -44,7 +44,12 @@ export class Belle2Loader extends PhoenixLoader {
     }
 
     public getEventData(): any {
+        const metadata = this.data?.EventMetadata
         const eventData: any = {
+            experimentNumber: metadata.experiment,
+            runNumber: metadata.run,
+            eventNumber: metadata.event,
+            time: metadata.time,
             ECLClusters: {},
             KLMClusters: {},
             Tracks: {},

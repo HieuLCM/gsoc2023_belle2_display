@@ -16,6 +16,7 @@ import * as saveAs from 'file-saver';
 import { eventConvertor } from './event-convertor';
 import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter';
 import { Belle2Loader } from 'src/loaders/event-data-loaders';
+import { format } from 'date-fns';
 import { Color } from 'three';
 // import * as mdst from '../../assets/mdst.json'
 // import * as phoenixMenuConfig from '../../assets/config.json';
@@ -34,7 +35,6 @@ export class EventDisplayComponent implements OnInit {
     );
 
     constructor(private eventDisplay: EventDisplayService) {}
-
     async ngOnInit() {
         // const detectorFile = new DetectorLoader('../../assets/Belle2Geo.root');
         // detectorFile.getData('VGM Root geometry');
@@ -108,22 +108,24 @@ export class EventDisplayComponent implements OnInit {
         //     this.eventDisplay.parsePhoenixEvents(mdstEventData);
         //   });
 
-        try {
-            const response = await fetch('../../assets/mdst_data.json');
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const mdst = await response.json();
-            const mdstEventData = belle2Loader.getAllEventData(mdst);
-            this.eventDisplay.parsePhoenixEvents(mdstEventData);
-        } catch (error) {
-            console.error(error);
+        const response = await fetch('../../assets/mdst_data.json');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
-
+        const mdst = await response.json();
+        const mdstEventData = belle2Loader.getAllEventData(mdst);
+        this.eventDisplay.parsePhoenixEvents(mdstEventData);
+        
         this.eventDisplay
             .getLoadingManager()
             .addProgressListener(progress => (this.loadingProgress = progress));
         this.eventDisplay.getLoadingManager().addLoadListenerWithCheck(() => {
+            this.eventDisplay.getUIManager().geometryVisibility("ARICH", false)
+            this.eventDisplay.getUIManager().geometryVisibility("BKLM", false)
+            this.eventDisplay.getUIManager().geometryVisibility("EKLM", false)
+            this.eventDisplay.getUIManager().geometryVisibility("EKLM > BWD", false)
+            this.eventDisplay.getUIManager().geometryVisibility("EKLM > FWD", false)
+            this.eventDisplay.getUIManager().geometryVisibility("CDC", false)
             this.loaded = true;
             // const urlConfig = this.eventDisplay
             // .getURLOptionsManager()
@@ -137,5 +139,6 @@ export class EventDisplayComponent implements OnInit {
             //   stateManager.loadStateFromJSON(phoenixMenuConfig);
             // }
         });
+        
     }
 }

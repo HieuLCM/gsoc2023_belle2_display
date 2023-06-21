@@ -2,7 +2,7 @@
 
 This Angular CLI web app displays a Belle2 event using Phoenix, a TypeScript-based event display framework.
 <br>
-The web app has been deployed and can be accessed through [belle2-detector-dummy-hieu-gsoc.netlify.app](https://belle2-detector-dummy-hieu-gsoc.netlify.app/)
+The web app has been deployed and can be accessed through [belle2-gsoc-2023-hieu-gsoc-draft.netlify.app](https://belle2-gsoc-2023-hieu-gsoc-draft.netlify.app/event-display)
 
 In order to run the application on your local machine, please perform the following steps.
 <br>

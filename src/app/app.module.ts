@@ -14,21 +14,21 @@ import { ViewToggleComponent } from './view-toggle/view-toggle.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    DetectorComponent,
-    EventDisplayComponent,
-    LoadingComponent,
-    ViewToggleComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    PhoenixUIModule,
-    BrowserAnimationsModule,
-    MatTooltipModule,
-  ],
-  providers: [],
-  bootstrap: [AppComponent],
+    declarations: [
+        AppComponent,
+        DetectorComponent,
+        EventDisplayComponent,
+        LoadingComponent,
+        ViewToggleComponent
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        PhoenixUIModule,
+        BrowserAnimationsModule,
+        MatTooltipModule
+    ],
+    providers: [],
+    bootstrap: [AppComponent]
 })
 export class AppModule {}

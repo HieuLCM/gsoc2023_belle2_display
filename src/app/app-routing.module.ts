@@ -6,18 +6,22 @@ import { DetectorComponent } from './detector/detector.component';
 
 // Define the routes for the application
 const routes: Routes = [
-  {
-    path: 'event-display',
-    component: EventDisplayComponent,
-  },
-  {
-    path: '**', // set the root path to display AppComponent
-    component: DetectorComponent,
-  },
+    {
+        path: 'detector',
+        component: DetectorComponent
+    },
+    {
+        path: '', // set the root path to display AppComponent
+        component: EventDisplayComponent
+    }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+    imports: [
+        RouterModule.forRoot(routes, {
+            useHash: true
+        })
+    ],
+    exports: [RouterModule]
 })
 export class AppRoutingModule {}

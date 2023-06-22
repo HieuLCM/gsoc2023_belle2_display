@@ -30,7 +30,7 @@ export class EventDisplayComponent implements OnInit {
     loaded = false;
     loadingProgress = 0;
     phoenixMenuRoot: PhoenixMenuNode = new PhoenixMenuNode(
-        'Phoenix Menu',
+        'Display Options',
         'phoenix-menu'
     );
 
@@ -115,30 +115,22 @@ export class EventDisplayComponent implements OnInit {
         const mdst = await response.json();
         const mdstEventData = belle2Loader.getAllEventData(mdst);
         this.eventDisplay.parsePhoenixEvents(mdstEventData);
-        
+
         this.eventDisplay
             .getLoadingManager()
             .addProgressListener(progress => (this.loadingProgress = progress));
         this.eventDisplay.getLoadingManager().addLoadListenerWithCheck(() => {
-            this.eventDisplay.getUIManager().geometryVisibility("ARICH", false)
-            this.eventDisplay.getUIManager().geometryVisibility("BKLM", false)
-            this.eventDisplay.getUIManager().geometryVisibility("EKLM", false)
-            this.eventDisplay.getUIManager().geometryVisibility("EKLM > BWD", false)
-            this.eventDisplay.getUIManager().geometryVisibility("EKLM > FWD", false)
-            this.eventDisplay.getUIManager().geometryVisibility("CDC", false)
+            this.eventDisplay.getUIManager().geometryVisibility('ARICH', false);
+            this.eventDisplay.getUIManager().geometryVisibility('BKLM', false);
+            this.eventDisplay.getUIManager().geometryVisibility('EKLM', false);
+            this.eventDisplay
+                .getUIManager()
+                .geometryVisibility('EKLM > BWD', false);
+            this.eventDisplay
+                .getUIManager()
+                .geometryVisibility('EKLM > FWD', false);
+            this.eventDisplay.getUIManager().geometryVisibility('CDC', false);
             this.loaded = true;
-            // const urlConfig = this.eventDisplay
-            // .getURLOptionsManager()
-            // .getURLOptions()
-            // .get('config');
-
-            // if (!urlConfig) {
-            //   this.loaded = true
-            // // Load the defaut config from JSON file
-            //   const stateManager = new StateManager();
-            //   stateManager.loadStateFromJSON(phoenixMenuConfig);
-            // }
         });
-        
     }
 }

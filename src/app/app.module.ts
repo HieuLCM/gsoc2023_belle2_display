@@ -10,8 +10,8 @@ import { EventDisplayComponent } from './event-display/event-display.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoadingComponent } from './loading/loading.component';
-import { ViewToggleComponent } from './view-toggle/view-toggle.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { CustomizedEventSelectorComponent } from './customized-event-selector/customized-event-selector.component';
 
 @NgModule({
     declarations: [
@@ -19,7 +19,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         DetectorComponent,
         EventDisplayComponent,
         LoadingComponent,
-        ViewToggleComponent
+        CustomizedEventSelectorComponent
     ],
     imports: [
         BrowserModule,

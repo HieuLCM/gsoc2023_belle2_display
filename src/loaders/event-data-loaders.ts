@@ -44,7 +44,7 @@ export class Belle2Loader extends PhoenixLoader {
     }
 
     public getEventData(): any {
-        const metadata = this.data?.EventMetadata
+        const metadata = this.data?.EventMetadata;
         const eventData: any = {
             experimentNumber: metadata.experiment,
             runNumber: metadata.run,
@@ -78,7 +78,9 @@ export class Belle2Loader extends PhoenixLoader {
         const allEventsData: any = {};
         for (let i = 1; i < Object.keys(allEventsDataFromJSON).length; i++) {
             this.data = allEventsDataFromJSON?.[`Event ${i}`];
-            allEventsData[`Event ${i}`] = this.getEventData();
+            allEventsData[
+                `Experiment ${this.data.EventMetadata.experiment}/Run ${this.data.EventMetadata.run}/Event ${this.data.EventMetadata.event}`
+            ] = this.getEventData();
         }
         return allEventsData;
     }
@@ -88,7 +90,7 @@ export class Belle2Loader extends PhoenixLoader {
         const clusterNum = this.data?.KLMClusters.length;
         if (clusterNum !== 0) {
             for (let i = 0; i < clusterNum; i++) {
-                klmClusters[`KLMCluster_${i}`] = [this.data.KLMClusters[i]];
+                klmClusters[`KLMCluster ${i}`] = [this.data.KLMClusters[i]];
             }
         }
         return klmClusters;
@@ -99,7 +101,7 @@ export class Belle2Loader extends PhoenixLoader {
         const clusterNum = this.data?.ECLClusters.length;
         if (clusterNum !== 0) {
             for (let i = 0; i < clusterNum; i++) {
-                eclClusters[`ECLCluster_${i}`] = [
+                eclClusters[`ECLCluster ${i}`] = [
                     {
                         energy: this.data.ECLClusters[i].energy,
                         theta: this.data.ECLClusters[i].theta,
@@ -127,6 +129,26 @@ export class Belle2Loader extends PhoenixLoader {
             omega: track.omega,
             tanLambda: track.tanLambda
         }));
+        // const trackNum = this.data?.Tracks.length;
+        // if (trackNum !== 0) {
+        //     for (let i = 0; i < trackNum; i++) {
+        //         tracks[`Track ${i}`] = [
+        //             {
+        //                 charge: this.data.Tracks[i].charge,
+        //                 // color: track.charge ? track.charge === 1.0 ? "E33535" : "336FD1": "A6C55E",
+        //                 color: '336FD1',
+        //                 pos: this.data.Tracks[i].pos.map((row: any) =>
+        //                     row.map((val: any) => val * this.scale)
+        //                 ),
+        //                 d0: this.data.Tracks[i].d0,
+        //                 z0: this.data.Tracks[i].z0,
+        //                 phi: this.data.Tracks[i].phi0,
+        //                 omega: this.data.Tracks[i].omega,
+        //                 tanLambda: this.data.Tracks[i].tanLambda
+        //             }
+        //         ];
+        //     }
+        // }
         return tracks;
     }
 

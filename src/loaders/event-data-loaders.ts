@@ -56,8 +56,8 @@ export class Belle2Loader extends PhoenixLoader {
             MCParticles: {}
         };
 
-        eventData.KLMClusters = this.getKLMClusters();
         eventData.ECLClusters = this.getECLClusters();
+        eventData.KLMClusters = this.getKLMClusters();
         eventData.Tracks = this.getTracks();
         eventData.MCParticles = this.getMCParticles();
         for (const objectType of [
@@ -174,11 +174,12 @@ export class Belle2Loader extends PhoenixLoader {
         // }
         this.data?.MCParticles.forEach((particle: any) => {
             if (particle?.seen?.length) {
-                if (!collection.includes(particle.name)) {
-                    collection.push(particle.name);
-                    particles[particle.name] = [];
+                const groupName = this.getParticleGroup(particle.PDG);
+                if (!collection.includes(groupName)) {
+                    collection.push(groupName);
+                    particles[groupName] = [];
                 }
-                particles[particle.name].push({
+                particles[groupName].push({
                     name: particle.name,
                     charge: particle.charge,
                     pos: particle.pos.map((row: any) =>
@@ -234,6 +235,40 @@ export class Belle2Loader extends PhoenixLoader {
                 return '#595954';
             default:
                 return '#bdbdb5';
+        }
+    }
+
+    private getParticleGroup(pdg: number): string {
+        switch (pdg) {
+            case 22:
+            case 2112:
+            case -2112:
+            case 130:
+                return 'Neutral particles';
+            case 321:
+            case -321:
+            case 2212:
+            case -2212:
+            case 411:
+            case -411:
+            case 421:
+            case 11:
+            case -11:
+            case 13:
+            case -13:
+            case 211:
+            case -211:
+            case 111:
+                return 'Charged particles';
+            case 12:
+            case 14:
+            case 16:
+            case -12:
+            case -14:
+            case -16:
+                return 'Neutrinos';
+            default:
+                return 'Others';
         }
     }
 }

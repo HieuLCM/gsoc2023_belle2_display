@@ -106,8 +106,8 @@ function clusterCreator(
         boxBuffer,
         new THREE.MeshPhongMaterial({
             color: 0x3a5311,
-            opacity: 0.7,
-            transparent: true,
+            // opacity: 0.7,
+            // transparent: true,
             side: THREE.DoubleSide
         })
     );
@@ -116,9 +116,9 @@ function clusterCreator(
     const lineBoxObject = new THREE.LineSegments(
         boxEdges,
         new THREE.LineBasicMaterial({
-            color: 0xffffff,
-            opacity: 0.7,
-            transparent: true
+            color: 0xffffff
+            // opacity: 1,
+            // transparent: true
         })
     );
 

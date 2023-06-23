@@ -1,4 +1,4 @@
-import { convertGeometry } from './phoenixExport';
+import { convertGeometry } from './detector-convertor';
 
 export class DetectorLoader {
     private fileData: any;

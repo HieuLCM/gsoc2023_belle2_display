@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { EventLoader } from '../../loaders/event-loader';
+import { EventLoader } from './event-loader';
 import {
     EventDataFormat,
     EventDataImportOption,

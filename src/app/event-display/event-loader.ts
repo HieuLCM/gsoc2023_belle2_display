@@ -53,7 +53,7 @@ export class EventLoader extends PhoenixLoader {
 
         this.fileData = {};
 
-        this.branches = [];
+        this.branches = ["KCLClusters", "ECLCLusters", "Tracks", "MCParticles"];
     }
 
     public async getData(treeName: string, onHandleData: (data: any) => void) {
@@ -69,6 +69,7 @@ export class EventLoader extends PhoenixLoader {
             return selector.getBranchData();
         });
         const allBranchData = await Promise.all(branchDataPromises);
+
         for (let i = 0; i < this.entries; i++) {
             for (let j = 0; j < this.branches.length; j++) {
                 this.fileData = {

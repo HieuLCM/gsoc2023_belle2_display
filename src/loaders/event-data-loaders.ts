@@ -6,7 +6,7 @@ import { ECLClusterObject } from './objects/eclCluster';
 
 export class Belle2Loader extends PhoenixLoader {
     private data: any;
-    private scale: number = 2;
+    private scale: number = 4;
 
     constructor() {
         super();

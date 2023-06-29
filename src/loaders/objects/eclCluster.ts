@@ -43,7 +43,7 @@ function getCaloPosition(radius: number, theta: number, phi: number) {
 
 export class ECLClusterObject {
     public static getECLCluster(eclClusterParams: any): Object3D {
-        const scale = 2;
+        const scale = 4;
         const clusterLength = eclClusterParams.energy * 120 * scale;
         const clusterWidth = 3 * scale;
         const radius = eclClusterParams.radius * scale + clusterLength * 0.3;

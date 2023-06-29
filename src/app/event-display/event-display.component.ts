@@ -61,24 +61,24 @@ export class EventDisplayComponent implements OnInit {
             presetViews: [
                 new PresetView(
                     'Left View',
-                    [0, 0, -1000],
+                    [0, 0, 1700],
                     [0, 0, 0],
                     'left-cube'
                 ),
                 new PresetView(
                     'Center View',
-                    [-1000, 50, 0],
+                    [1600, 50, 0],
                     [0, 0, 0],
                     'top-cube'
                 ),
                 new PresetView(
                     'Right View',
-                    [0, 0, 1200],
+                    [0, 0, -1700],
                     [0, 0, 0],
                     'right-cube'
                 )
             ],
-            defaultView: [820, -200, 530, 0, 0, 0],
+            defaultView: [1600, -300, 900, 0, 0, 0],
             phoenixMenuRoot: this.phoenixMenuRoot,
             forceColourTheme: 'dark'
             // defaultEventFile: {
@@ -92,7 +92,7 @@ export class EventDisplayComponent implements OnInit {
             '../../assets/Belle2Geo_EventDisplay.gltf',
             undefined,
             undefined,
-            2,
+            4,
             true
         );
 

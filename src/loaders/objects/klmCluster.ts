@@ -135,7 +135,7 @@ function clusterCreator(
 
 export class KLMClusterObject {
     public static getKLMCluster(klmClusterParams: any): THREE.Object3D {
-        const scale: number = 2;
+        const scale: number = 4;
         const layerThickness = 3.16 * scale;
         const layerDistance = 9.1 * scale - layerThickness;
         const layerNum = klmClusterParams['layer'];

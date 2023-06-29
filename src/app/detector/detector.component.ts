@@ -26,7 +26,6 @@ export class DetectorComponent implements OnInit {
         // const detectorFile = new DetectorLoader('../../assets/Belle2Geo.root');
         // detectorFile.getData('VGM Root geometry');
 
-
         const configuration: Configuration = {
             presetViews: [
                 new PresetView(

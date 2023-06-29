@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoadingComponent } from './loading/loading.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 import { CustomizedEventSelectorComponent } from './customized-event-selector/customized-event-selector.component';
 import { IOEventComponent } from './io-event/io-event.component';
 import { IODialogComponent } from './io-event/io-dialog/io-dialog.component';
@@ -24,7 +25,7 @@ import { IODialogComponent } from './io-event/io-dialog/io-dialog.component';
         LoadingComponent,
         CustomizedEventSelectorComponent,
         IOEventComponent,
-        IODialogComponent,
+        IODialogComponent
     ],
     imports: [
         BrowserModule,
@@ -32,7 +33,8 @@ import { IODialogComponent } from './io-event/io-dialog/io-dialog.component';
         PhoenixUIModule,
         BrowserAnimationsModule,
         MatTooltipModule,
-        MatDialogModule
+        MatDialogModule,
+        MatButtonModule
     ],
     providers: [],
     bootstrap: [AppComponent]

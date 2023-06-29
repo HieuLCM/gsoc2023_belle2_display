@@ -53,6 +53,7 @@ export class EventDisplayComponent implements OnInit {
         //   //   type: 'application/json',
         //   // });
         //   // saveAs(fileToSave, 'mdst.json');
+        //   console.log(data)
         // });
         // eventConvertor()
         const configuration: Configuration = {

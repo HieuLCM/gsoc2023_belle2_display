@@ -76,7 +76,7 @@ export class Belle2Loader extends PhoenixLoader {
 
     public getAllEventData(allEventsDataFromJSON: any): any {
         const allEventsData: any = {};
-        for (let i = 1; i < Object.keys(allEventsDataFromJSON).length; i++) {
+        for (let i = 1; i <= Object.keys(allEventsDataFromJSON).length; i++) {
             this.data = allEventsDataFromJSON?.[`Event ${i}`];
             allEventsData[
                 `Experiment ${this.data.EventMetadata.experiment}/Run ${this.data.EventMetadata.run}/Event ${this.data.EventMetadata.event}`

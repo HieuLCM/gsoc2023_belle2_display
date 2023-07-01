@@ -22,7 +22,7 @@ In order to run the application on your local machine, please perform the follow
 5. Navigate to `http://localhost:4200/` in your web browser to view the app
 
 ## About the App
-![image](https://github.com/HieuLCM/Belle2_Web_Display_dum_ver/assets/88785267/9a704639-55f3-4813-91af-d82eb5e75225)
+![image](https://github.com/HieuLCM/GSoC2023_Belle2/assets/88785267/dc08313f-03a9-4832-9713-123b554b0a10)
 
 The app showcases the use of Angular CLI and the `phoenix-event-display` and `phoenix-ui-components` libraries for displaying 3D objects on a web page.
 <br>

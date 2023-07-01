@@ -211,7 +211,11 @@ class TEventSelector extends TSelector {
                 phi0: track['m_tau'][1],
                 omega: track['m_tau'][2],
                 z0: track['m_tau'][3],
-                tanLambda: track['m_tau'][4]
+                tanLambda: track['m_tau'][4],
+                charge:
+                    track['m_tau'][2] === 0
+                        ? 0
+                        : track['m_tau'][2] / Math.abs(track['m_tau'][2])
             }))
         ];
     }

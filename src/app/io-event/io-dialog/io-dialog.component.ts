@@ -124,7 +124,6 @@ export class IODialogComponent implements OnInit {
             const belle2Loader = new Belle2Loader();
             const data = belle2Loader.getAllEventData(fileData);
             this.eventDisplay.parsePhoenixEvents(data);
-            console.log(fileData);
         });
 
         this.onClose();

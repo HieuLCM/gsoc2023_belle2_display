@@ -180,14 +180,14 @@ export class Belle2Loader extends PhoenixLoader {
                     particles[groupName] = [];
                 }
                 particles[groupName].push({
-                    name: particle.name,
+                    ...(particle.name && { name: particle.name }),
                     charge: particle.charge,
                     pos: particle.pos.map((row: any) =>
                         row.map((val: any) => val * this.scale)
                     ),
                     PDG: particle.PDG,
                     color: this.getParticleColor(particle.PDG),
-                    seen: particle.seen
+                    seen: particle?.seen
                 });
             }
         });

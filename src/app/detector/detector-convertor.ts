@@ -248,7 +248,6 @@ async function convert_geometry(
 
         scenes.push(scene);
     }
-    console.log(scenes);
     await saveGeometry(scenes, outputFile);
 }
 

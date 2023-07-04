@@ -40,8 +40,6 @@ export class EventDisplayComponent implements OnInit {
         // detectorFile.getData('VGM Root geometry');
         const belle2Loader = new Belle2Loader();
 
-        // const eventLoader = new EventLoader('../../assets/mdst-v06-00-00.root');
-
         // eventLoader.getData('tree', (data: any) => {
         //   // const replacer = (key: any, value: any) => {
         //   //   if (typeof value === 'bigint') {
@@ -53,7 +51,6 @@ export class EventDisplayComponent implements OnInit {
         //   //   type: 'application/json',
         //   // });
         //   // saveAs(fileToSave, 'mdst.json');
-        //   console.log(data)
         // });
         // eventConvertor()
         const configuration: Configuration = {
@@ -88,6 +85,13 @@ export class EventDisplayComponent implements OnInit {
         };
 
         this.eventDisplay.init(configuration);
+
+        const eventLoader = new EventLoader('../../assets/mdst-v06-00-00.root');
+
+        const data = await await eventLoader.getData('tree');
+        const eventData = belle2Loader.getAllEventData(data);
+        this.eventDisplay.parsePhoenixEvents(eventData);
+
         this.eventDisplay.loadGLTFGeometry(
             '../../assets/Belle2Geo_EventDisplay.gltf',
             undefined,
@@ -109,17 +113,15 @@ export class EventDisplayComponent implements OnInit {
         //     this.eventDisplay.parsePhoenixEvents(mdstEventData);
         //   });
 
-        const response = await fetch('../../assets/mdst_data.json');
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        const mdst = await response.json();
-        const mdstEventData = belle2Loader.getAllEventData(mdst);
-        this.eventDisplay.parsePhoenixEvents(mdstEventData);
+        // const response = await fetch('../../assets/mdst_data.json');
+        // if (!response.ok) {
+        //     throw new Error('Network response was not ok');
+        // }
 
-        this.eventDisplay
-            .getLoadingManager()
-            .addProgressListener(progress => (this.loadingProgress = progress));
+        this.eventDisplay.getLoadingManager().addProgressListener(progress => {
+            return (this.loadingProgress = progress);
+        });
+
         this.eventDisplay.getLoadingManager().addLoadListenerWithCheck(() => {
             this.eventDisplay.getUIManager().geometryVisibility('ARICH', false);
             this.eventDisplay.getUIManager().geometryVisibility('BKLM', false);
@@ -131,6 +133,7 @@ export class EventDisplayComponent implements OnInit {
                 .getUIManager()
                 .geometryVisibility('EKLM > FWD', false);
             this.eventDisplay.getUIManager().geometryVisibility('CDC', false);
+
             this.loaded = true;
         });
     }

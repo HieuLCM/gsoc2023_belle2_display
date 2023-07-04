@@ -190,7 +190,7 @@ class TEventSelector extends TSelector {
                         momentum_x: px,
                         momentum_y: py,
                         momentum_z: pz,
-                        seen: `bit ${particle['m_seenIn']['m_bits']}`
+                        seen: `${particle['m_seenIn']['m_bits']}`
                     };
                 })
         ];
@@ -217,6 +217,45 @@ class TEventSelector extends TSelector {
                         ? 0
                         : track['m_tau'][2] / Math.abs(track['m_tau'][2])
             }))
+        ];
+    }
+
+    getTracksToPIDLikelihoods(data: any) {
+        const elementData: any = data['m_elements'];
+        const tracksToPIDMap: any = {};
+        for (let i = 0; i < elementData.length; i++) {
+            tracksToPIDMap[elementData[i]['m_from']] =
+                elementData[i]['m_to'][0];
+        }
+        return tracksToPIDMap;
+    }
+
+    getPIDLikelihoods(data: any) {
+        // [<type: e->, <type: mu->, <type: pi+>, <type: K+>, <type: p+>, <type: deuteron>]
+        const stableParticles = ['e-', 'mu-', 'pi+', 'K+', 'p+', 'deuteron'];
+        // <set: SVD,CDC,TOP,ARICH,ECL,KLM>
+        const detectorSet = ['SVD', 'CDC', 'TOP', 'ARICH', 'ECL', 'KLM'];
+        const printProb = (prob: number) => {
+            return `${Math.exp(prob).toFixed(2)}`;
+        };
+        return [
+            ...data.map((info: any) => {
+                const logL = info['m_logl'];
+                const PID: any = {};
+                for (let i = 0; i < detectorSet.length; i++) {
+                    if (!logL[i].every((num: number) => num === 0)) {
+                        PID[detectorSet[i]] = {
+                            [stableParticles[0]]: printProb(logL[i][0]),
+                            [stableParticles[1]]: printProb(logL[i][1]),
+                            [stableParticles[2]]: printProb(logL[i][2]),
+                            [stableParticles[3]]: printProb(logL[i][3]),
+                            [stableParticles[4]]: printProb(logL[i][4]),
+                            [stableParticles[5]]: printProb(logL[i][5])
+                        };
+                    }
+                }
+                return PID;
+            })
         ];
     }
 
@@ -259,6 +298,20 @@ class TEventSelector extends TSelector {
                 MCParticles: this.getMCParticles(this.tgtobj['MCParticles'])
             });
         }
+        if (this.branch === 'TracksToPIDLikelihoods') {
+            this.branchData.push({
+                TracksToPIDLikelihoods: this.getTracksToPIDLikelihoods(
+                    this.tgtobj['TracksToPIDLikelihoods']
+                )
+            });
+        }
+        if (this.branch === 'PIDLikelihoods') {
+            this.branchData.push({
+                PIDLikelihoods: this.getPIDLikelihoods(
+                    this.tgtobj['PIDLikelihoods']
+                )
+            });
+        }
     }
 
     /** function called when processing finishes */
@@ -287,6 +340,8 @@ export class EventLoader extends PhoenixLoader {
             'ECLClusters',
             'Tracks',
             'TrackFitResults',
+            'TracksToPIDLikelihoods',
+            'PIDLikelihoods',
             'MCParticles',
             'EventMetaData'
         ];
@@ -357,7 +412,10 @@ export class EventLoader extends PhoenixLoader {
         return points;
     }
 
-    public async getData(treeName: string, onHandleData: (data: any) => void) {
+    public async getData(
+        treeName: string,
+        onHandleData: (data: any) => void = () => {}
+    ) {
         jsrootSettings.UseStamp = false;
 
         const file = await openFile(this.fileURL);
@@ -387,12 +445,14 @@ export class EventLoader extends PhoenixLoader {
             const eventData = this.fileData[`Event ${i + 1}`];
             for (let j = 0; j < eventData['Tracks'].length; j++) {
                 const trackFitIndex = eventData['Tracks'][j]['trackFitIndex'];
+                const PIDIndex = eventData['TracksToPIDLikelihoods'][j];
                 eventData['Tracks'][j] = {
                     ...eventData['Tracks'][j],
                     pos: this.getTrackPos(
                         eventData['TrackFitResults'][trackFitIndex]
                     ),
-                    ...eventData['TrackFitResults'][trackFitIndex]
+                    ...eventData['TrackFitResults'][trackFitIndex],
+                    ...eventData['PIDLikelihoods'][PIDIndex]
                 };
             }
         }

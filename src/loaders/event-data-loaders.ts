@@ -118,16 +118,23 @@ export class Belle2Loader extends PhoenixLoader {
         let tracks: any = {};
         tracks['Fitted Track'] = this.data?.Tracks.map((track: any) => ({
             charge: track.charge,
-            // color: track.charge ? track.charge === 1.0 ? "E33535" : "336FD1": "A6C55E",
             color: '336FD1',
-            pos: track.pos.map((row: any) =>
-                row.map((val: any) => val * this.scale)
-            ),
             d0: track.d0,
             z0: track.z0,
             phi: track.phi0,
             omega: track.omega,
-            tanLambda: track.tanLambda
+            tanLambda: track.tanLambda,
+            ...(track.SVD && { SVD: JSON.stringify(track.SVD, null, '  ') }),
+            ...(track.CDC && { CDC: JSON.stringify(track.CDC, null, '  ') }),
+            ...(track.TOP && { TOP: JSON.stringify(track.TOP, null, '  ') }),
+            ...(track.ARICH && {
+                ARICH: JSON.stringify(track.ARICH, null, '  ')
+            }),
+            ...(track.ECL && { ECL: JSON.stringify(track.ECL, null, '  ') }),
+            ...(track.KLM && { KLM: JSON.stringify(track.KLM, null, '  ') }),
+            pos: track.pos.map((row: any) =>
+                row.map((val: any) => val * this.scale)
+            )
         }));
         // const trackNum = this.data?.Tracks.length;
         // if (trackNum !== 0) {
@@ -172,6 +179,25 @@ export class Belle2Loader extends PhoenixLoader {
         //   "-411": "deuteron",
         //   "421": "deuteron"
         // }
+        const particleNames = {
+            11: 'e-',
+            12: 'nu_e',
+            13: 'mu-',
+            14: 'nu_mu',
+            22: 'gamma',
+            130: 'K_L0',
+            211: 'pi+',
+            2112: 'n0',
+            2212: 'p+',
+            '-11': 'e+',
+            '-12': 'anti-nu_e',
+            '-13': 'mu+',
+            '-14': 'anti-nu_mu',
+            '-211': 'pi-',
+            321: 'K+',
+            '-321': 'K-',
+            '-2212': 'anti-p-'
+        };
         this.data?.MCParticles.forEach((particle: any) => {
             if (particle?.seen?.length) {
                 const groupName = this.getParticleGroup(particle.PDG);
@@ -180,7 +206,10 @@ export class Belle2Loader extends PhoenixLoader {
                     particles[groupName] = [];
                 }
                 particles[groupName].push({
-                    ...(particle.name && { name: particle.name }),
+                    name:
+                        particle.name ??
+                        particleNames[particle.PDG] ??
+                        'Unknown particle',
                     charge: particle.charge,
                     pos: particle.pos.map((row: any) =>
                         row.map((val: any) => val * this.scale)

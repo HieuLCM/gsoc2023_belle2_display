@@ -86,9 +86,15 @@ export class EventDisplayComponent implements OnInit {
 
         this.eventDisplay.init(configuration);
 
-        const eventLoader = new EventLoader('../../assets/mdst-v06-00-00.root');
+        const response = await fetch('../../assets/mdst_data.json');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
 
-        const data = await await eventLoader.getData('tree');
+        // const eventLoader = new EventLoader('../../assets/mdst-v06-00-00.root');
+
+        // const data = await eventLoader.getData('tree');
+        const data = await response.json();
         const eventData = belle2Loader.getAllEventData(data);
         this.eventDisplay.parsePhoenixEvents(eventData);
 

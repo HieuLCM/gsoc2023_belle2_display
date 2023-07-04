@@ -116,26 +116,39 @@ export class Belle2Loader extends PhoenixLoader {
 
     private getTracks(): any {
         let tracks: any = {};
-        tracks['Fitted Track'] = this.data?.Tracks.map((track: any) => ({
-            charge: track.charge,
-            color: '336FD1',
-            d0: track.d0,
-            z0: track.z0,
-            phi: track.phi0,
-            omega: track.omega,
-            tanLambda: track.tanLambda,
-            ...(track.SVD && { SVD: JSON.stringify(track.SVD, null, '  ') }),
-            ...(track.CDC && { CDC: JSON.stringify(track.CDC, null, '  ') }),
-            ...(track.TOP && { TOP: JSON.stringify(track.TOP, null, '  ') }),
-            ...(track.ARICH && {
-                ARICH: JSON.stringify(track.ARICH, null, '  ')
-            }),
-            ...(track.ECL && { ECL: JSON.stringify(track.ECL, null, '  ') }),
-            ...(track.KLM && { KLM: JSON.stringify(track.KLM, null, '  ') }),
-            pos: track.pos.map((row: any) =>
-                row.map((val: any) => val * this.scale)
-            )
-        }));
+        console.log(this.data.Tracks);
+        tracks['Fitted Track'] = this.data?.Tracks.map(
+            (track: any, index: number) => ({
+                charge: track.charge,
+                color: '336FD1',
+                d0: track.d0,
+                z0: track.z0,
+                phi: track.phi0,
+                omega: track.omega,
+                tanLambda: track.tanLambda,
+                // ...(track.SVD && { SVD: JSON.stringify(track.SVD, null, '  ') }),
+                // ...(track.CDC && { CDC: JSON.stringify(track.CDC, null, '  ') }),
+                // ...(track.TOP && { TOP: JSON.stringify(track.TOP, null, '  ') }),
+                // ...(track.ARICH && {
+                //     ARICH: JSON.stringify(track.ARICH, null, '  ')
+                // }),
+                // ...(track.ECL && { ECL: JSON.stringify(track.ECL, null, '  ') }),
+                // ...(track.KLM && { KLM: JSON.stringify(track.KLM, null, '  ') }),
+                'e-': track['e-'] ?? this.data?.PIDLikelihoods?.[index]['e-'],
+                'mu-':
+                    track['mu-'] ?? this.data?.PIDLikelihoods?.[index]['mu-'],
+                'pi+':
+                    track['pi+'] ?? this.data?.PIDLikelihoods?.[index]['pi+'],
+                'K+': track['K+'] ?? this.data?.PIDLikelihoods?.[index]['K+'],
+                'p+': track['p+'] ?? this.data?.PIDLikelihoods?.[index]['p+'],
+                deuteron:
+                    track['deuteron'] ??
+                    this.data?.PIDLikelihoods?.[index]['deuteron'],
+                pos: track.pos.map((row: any) =>
+                    row.map((val: any) => val * this.scale)
+                )
+            })
+        );
         // const trackNum = this.data?.Tracks.length;
         // if (trackNum !== 0) {
         //     for (let i = 0; i < trackNum; i++) {

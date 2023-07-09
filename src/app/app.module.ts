@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { PhoenixUIModule } from 'phoenix-ui-components';
 
@@ -16,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { CustomizedEventSelectorComponent } from './customized-event-selector/customized-event-selector.component';
 import { IOEventComponent } from './io-event/io-event.component';
 import { IODialogComponent } from './io-event/io-dialog/io-dialog.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
     declarations: [
@@ -25,7 +27,8 @@ import { IODialogComponent } from './io-event/io-dialog/io-dialog.component';
         LoadingComponent,
         CustomizedEventSelectorComponent,
         IOEventComponent,
-        IODialogComponent
+        IODialogComponent,
+        HomeComponent
     ],
     imports: [
         BrowserModule,
@@ -34,7 +37,8 @@ import { IODialogComponent } from './io-event/io-dialog/io-dialog.component';
         BrowserAnimationsModule,
         MatTooltipModule,
         MatDialogModule,
-        MatButtonModule
+        MatButtonModule,
+        HttpClientModule
     ],
     providers: [],
     bootstrap: [AppComponent]

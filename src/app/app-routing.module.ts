@@ -3,16 +3,21 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { EventDisplayComponent } from './event-display/event-display.component';
 import { DetectorComponent } from './detector/detector.component';
+import { HomeComponent } from './home/home.component';
 
 // Define the routes for the application
 const routes: Routes = [
     {
-        path: 'detector',
+        path: 'detector-geometry',
         component: DetectorComponent
     },
     {
-        path: '', // set the root path to display AppComponent
+        path: 'event-display', // set the root path to display AppComponent
         component: EventDisplayComponent
+    },
+    {
+        path: '',
+        component: HomeComponent
     }
 ];
 

@@ -16,7 +16,7 @@ export class DetectorComponent implements OnInit {
     loaded = false;
     loadingProgress = 0;
     phoenixMenuRoot: PhoenixMenuNode = new PhoenixMenuNode(
-        'Phoenix Menu',
+        'Display Options',
         'phoenix-menu'
     );
 

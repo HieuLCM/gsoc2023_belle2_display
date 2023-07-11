@@ -114,40 +114,72 @@ export class Belle2Loader extends PhoenixLoader {
         return eclClusters;
     }
 
+    getProbabilities(logL: any) {
+        if (Object.keys(logL).length === 0) return {};
+
+        const stableParticles = ['e-', 'mu-', 'pi+', 'K+', 'p+', 'deuteron'];
+        const frac: number[] = new Array(stableParticles.length).fill(1.0);
+        const probabilities: any = {};
+        let norm = 0;
+
+        const logLMax = Math.max(...(Object.values(logL) as number[]));
+
+        for (let i = 0; i < stableParticles.length; i++) {
+            const particle = stableParticles[i];
+            const exponent = Math.exp(logL[particle] - logLMax) * frac[i];
+            probabilities[particle] = exponent;
+            norm += exponent;
+        }
+
+        for (let i = 0; i < stableParticles.length; i++) {
+            const particle = stableParticles[i];
+            probabilities[particle] /= norm;
+        }
+
+        return probabilities;
+    }
+
     private getTracks(): any {
         let tracks: any = {};
-        console.log(this.data.Tracks);
         tracks['Fitted Track'] = this.data?.Tracks.map(
-            (track: any, index: number) => ({
-                charge: track.charge,
-                color: '336FD1',
-                d0: track.d0,
-                z0: track.z0,
-                phi: track.phi0,
-                omega: track.omega,
-                tanLambda: track.tanLambda,
-                // ...(track.SVD && { SVD: JSON.stringify(track.SVD, null, '  ') }),
-                // ...(track.CDC && { CDC: JSON.stringify(track.CDC, null, '  ') }),
-                // ...(track.TOP && { TOP: JSON.stringify(track.TOP, null, '  ') }),
-                // ...(track.ARICH && {
-                //     ARICH: JSON.stringify(track.ARICH, null, '  ')
-                // }),
-                // ...(track.ECL && { ECL: JSON.stringify(track.ECL, null, '  ') }),
-                // ...(track.KLM && { KLM: JSON.stringify(track.KLM, null, '  ') }),
-                'e-': track['e-'] ?? this.data?.PIDLikelihoods?.[index]['e-'],
-                'mu-':
-                    track['mu-'] ?? this.data?.PIDLikelihoods?.[index]['mu-'],
-                'pi+':
-                    track['pi+'] ?? this.data?.PIDLikelihoods?.[index]['pi+'],
-                'K+': track['K+'] ?? this.data?.PIDLikelihoods?.[index]['K+'],
-                'p+': track['p+'] ?? this.data?.PIDLikelihoods?.[index]['p+'],
-                deuteron:
-                    track['deuteron'] ??
-                    this.data?.PIDLikelihoods?.[index]['deuteron'],
-                pos: track.pos.map((row: any) =>
-                    row.map((val: any) => val * this.scale)
-                )
-            })
+            (track: any, index: number) => {
+                const logL = {
+                    'e-':
+                        track['e-'] ?? this.data?.PIDLikelihoods?.[index]['e-'],
+                    'mu-':
+                        track['mu-'] ??
+                        this.data?.PIDLikelihoods?.[index]['mu-'],
+                    'pi+':
+                        track['pi+'] ??
+                        this.data?.PIDLikelihoods?.[index]['pi+'],
+                    'K+':
+                        track['K+'] ?? this.data?.PIDLikelihoods?.[index]['K+'],
+                    'p+':
+                        track['p+'] ?? this.data?.PIDLikelihoods?.[index]['p+'],
+                    deuteron:
+                        track['deuteron'] ??
+                        this.data?.PIDLikelihoods?.[index]['deuteron']
+                };
+                const probabilities = this.getProbabilities(logL);
+                return {
+                    charge: track.charge,
+                    color: '336FD1',
+                    d0: track.d0,
+                    z0: track.z0,
+                    phi: track.phi0,
+                    omega: track.omega,
+                    tanLambda: track.tanLambda,
+                    'e-': probabilities?.['e-'],
+                    'mu-': probabilities?.['mu-'],
+                    'pi+': probabilities?.['pi+'],
+                    'K+': probabilities?.['K+'],
+                    'p+': probabilities?.['p+'],
+                    deuteron: probabilities?.['deuteron'],
+                    pos: track.pos.map((row: any) =>
+                        row.map((val: any) => val * this.scale)
+                    )
+                };
+            }
         );
         // const trackNum = this.data?.Tracks.length;
         // if (trackNum !== 0) {

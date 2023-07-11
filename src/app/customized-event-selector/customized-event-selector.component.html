@@ -1,4 +1,4 @@
-<div class="eventSelector mx-2" *ngIf="events != null">
+<div class="eventSelector mx-2" *ngIf="events != null && events.length !== 0">
     <button
         (click)="previousEvent()"
         matTooltip="Previous event"
@@ -34,7 +34,7 @@
         </svg>
     </button>
 </div>
-<div class="eventInfo">
+<div class="eventInfo" *ngIf="events != null && events.length !== 0">
     <h6>
         Experiment {{ experimentNum }} / Run {{ runNum }} / Event {{ eventNum }}
     </h6>

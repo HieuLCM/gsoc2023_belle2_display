@@ -6,6 +6,7 @@ import {
     PhoenixMenuNode,
     PresetView
 } from 'phoenix-event-display';
+import { Belle2Loader } from 'src/loaders/event-data-loaders';
 
 @Component({
     selector: 'app-detector',
@@ -25,29 +26,31 @@ export class DetectorComponent implements OnInit {
     ngOnInit() {
         // const detectorFile = new DetectorLoader('../../assets/Belle2Geo.root');
         // detectorFile.getData('VGM Root geometry');
+        const belle2Loader = new Belle2Loader();
 
         const configuration: Configuration = {
+            eventDataLoader: belle2Loader,
             presetViews: [
                 new PresetView(
                     'Left View',
-                    [0, 250, 1200],
+                    [0, 0, 3600],
                     [0, 0, 0],
                     'left-cube'
                 ),
                 new PresetView(
                     'Center View',
-                    [1300, 100, 0],
+                    [3300, 100, 0],
                     [0, 0, 0],
                     'top-cube'
                 ),
                 new PresetView(
                     'Right View',
-                    [0, 250, -1200],
+                    [0, 0, -3600],
                     [0, 0, 0],
                     'right-cube'
                 )
             ],
-            defaultView: [1000, -300, 600, 0, 0, 0],
+            defaultView: [3300, -100, 1800, 0, 0, 0],
             phoenixMenuRoot: this.phoenixMenuRoot
         };
 
@@ -57,7 +60,7 @@ export class DetectorComponent implements OnInit {
             '../../assets/Belle2Geo_BKLM.gltf',
             undefined,
             undefined,
-            1,
+            4,
             true
         );
 
@@ -65,7 +68,7 @@ export class DetectorComponent implements OnInit {
             '../../assets/Belle2Geo_Section.gltf',
             undefined,
             undefined,
-            1,
+            4,
             true
         );
 
@@ -73,7 +76,7 @@ export class DetectorComponent implements OnInit {
             '../../assets/Belle2Geo.gltf',
             undefined,
             undefined,
-            1,
+            4,
             true
         );
 
@@ -81,7 +84,7 @@ export class DetectorComponent implements OnInit {
             '../../assets/Belle2Geo_ARICH.gltf',
             undefined,
             undefined,
-            1,
+            4,
             true
         );
 
@@ -89,7 +92,7 @@ export class DetectorComponent implements OnInit {
             '../../assets/Belle2Geo_Material_FWD.gltf',
             undefined,
             undefined,
-            1,
+            4,
             true
         );
 
@@ -97,7 +100,7 @@ export class DetectorComponent implements OnInit {
             '../../assets/Belle2Geo_Material_BWD.gltf',
             undefined,
             undefined,
-            1,
+            4,
             true
         );
 
@@ -105,7 +108,7 @@ export class DetectorComponent implements OnInit {
             '../../assets/Belle2Geo_Material_TOP_BWD.gltf',
             undefined,
             undefined,
-            1,
+            4,
             true
         );
 
@@ -113,7 +116,7 @@ export class DetectorComponent implements OnInit {
             '../../assets/Belle2Geo_Material_Barrel.gltf',
             undefined,
             undefined,
-            1,
+            4,
             true
         );
 
@@ -121,7 +124,7 @@ export class DetectorComponent implements OnInit {
             '../../assets/Belle2Geo_TOP.gltf',
             undefined,
             undefined,
-            1,
+            4,
             true
         );
 

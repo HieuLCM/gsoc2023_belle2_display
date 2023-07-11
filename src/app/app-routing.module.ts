@@ -8,7 +8,7 @@ import { HomeComponent } from './home/home.component';
 // Define the routes for the application
 const routes: Routes = [
     {
-        path: 'detector-geometry',
+        path: 'detector',
         component: DetectorComponent
     },
     {

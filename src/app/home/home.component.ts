@@ -7,11 +7,10 @@ import { EventDisplayService } from 'phoenix-ui-components';
     styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements AfterViewInit {
-    year: number;
 
     constructor(private eventDisplay: EventDisplayService) {
-        this.year = new Date().getFullYear();
         this.eventDisplay.getThreeManager().stopAnimationLoop();
+        this.eventDisplay.getUIManager().setDarkTheme(true)
     }
 
     ngAfterViewInit() {

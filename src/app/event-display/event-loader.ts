@@ -190,6 +190,7 @@ class TEventSelector extends TSelector {
                         momentum_x: px,
                         momentum_y: py,
                         momentum_z: pz,
+                        energy: particle['m_energy'],
                         seen: `${particle['m_seenIn']['m_bits']}`
                     };
                 })

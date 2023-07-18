@@ -259,6 +259,10 @@ export class Belle2Loader extends PhoenixLoader {
                     pos: particle.pos.map((row: any) =>
                         row.map((val: any) => val * this.scale)
                     ),
+                    energy: particle?.energy,
+                    momentumX: particle?.momentum_x,
+                    momentumY: particle?.momentum_y,
+                    momentumZ: particle?.momentum_z,
                     PDG: particle.PDG,
                     color: this.getParticleColor(particle.PDG),
                     seen: particle?.seen

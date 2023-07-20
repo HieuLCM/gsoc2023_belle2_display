@@ -11,11 +11,6 @@ class TEventSelector extends TSelector {
         super();
         this.branch = branch;
         this.addBranch(branch);
-        // if (this.branch === "EventMetaData") {
-        //     this.branchData = {}
-        // } else {
-        //     this.branchData = [];
-        // }
         this.branchData = [];
     }
 
@@ -236,28 +231,6 @@ class TEventSelector extends TSelector {
         const stableParticles = ['e-', 'mu-', 'pi+', 'K+', 'p+', 'deuteron'];
         // <set: SVD,CDC,TOP,ARICH,ECL,KLM>
         const detectorSet = ['SVD', 'CDC', 'TOP', 'ARICH', 'ECL', 'KLM'];
-        // const printProb = (prob: number) => {
-        //     return `${prob.toFixed(4)}`;
-        // };
-        // return [
-        //     ...data.map((info: any) => {
-        //         const logL = info['m_logl'];
-        //         const PID: any = {};
-        //         for (let i = 0; i < detectorSet.length; i++) {
-        //             if (!logL[i].every((num: number) => num === 0)) {
-        //                 PID[detectorSet[i]] = {
-        //                     [stableParticles[0]]: printProb(logL[i][0]),
-        //                     [stableParticles[1]]: printProb(logL[i][1]),
-        //                     [stableParticles[2]]: printProb(logL[i][2]),
-        //                     [stableParticles[3]]: printProb(logL[i][3]),
-        //                     [stableParticles[4]]: printProb(logL[i][4]),
-        //                     [stableParticles[5]]: printProb(logL[i][5])
-        //                 };
-        //             }
-        //         }
-        //         return PID;
-        //     })
-        // ];
         return [
             ...data.map((info: any) => {
                 const logl = info['m_logl'];

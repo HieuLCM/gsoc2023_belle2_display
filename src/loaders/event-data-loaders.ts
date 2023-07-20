@@ -85,6 +85,10 @@ export class Belle2Loader extends PhoenixLoader {
         return allEventsData;
     }
 
+    private radianToDegree(angle: number) {
+        return ((angle * 180) / Math.PI).toFixed(4) + ' °';
+    }
+
     private getKLMClusters(): any {
         const klmClusters: any = {};
         const clusterNum = this.data?.KLMClusters.length;
@@ -114,7 +118,7 @@ export class Belle2Loader extends PhoenixLoader {
         return eclClusters;
     }
 
-    getProbabilities(logL: any) {
+    private getProbabilities(logL: any) {
         if (Object.keys(logL).length === 0) return {};
 
         const stableParticles = ['e-', 'mu-', 'pi+', 'K+', 'p+', 'deuteron'];
@@ -139,8 +143,18 @@ export class Belle2Loader extends PhoenixLoader {
         return probabilities;
     }
 
+    private getMommentumForTrack(tanLambda, omega, phi) {
+        return {
+            momentumX: ((0.0045 * Math.cos(phi)) / omega).toPrecision(5),
+            momentumY: ((0.0045 * Math.sin(phi)) / omega).toPrecision(5),
+            momentumZ: ((0.0045 * tanLambda) / omega).toPrecision(5)
+        };
+    }
+
     private getTracks(): any {
         let tracks: any = {};
+        const roundProbability = (prob: number) => prob.toFixed(4);
+
         tracks['Fitted Track'] = this.data?.Tracks.map(
             (track: any, index: number) => {
                 const logL = {
@@ -164,43 +178,28 @@ export class Belle2Loader extends PhoenixLoader {
                 return {
                     charge: track.charge,
                     color: '336FD1',
-                    d0: track.d0,
-                    z0: track.z0,
-                    phi: track.phi0,
-                    omega: track.omega,
-                    tanLambda: track.tanLambda,
-                    'e-': probabilities?.['e-'],
-                    'mu-': probabilities?.['mu-'],
-                    'pi+': probabilities?.['pi+'],
-                    'K+': probabilities?.['K+'],
-                    'p+': probabilities?.['p+'],
-                    deuteron: probabilities?.['deuteron'],
+                    d0: track.d0.toPrecision(5),
+                    z0: track.z0.toPrecision(5),
+                    phi: track.phi0.toPrecision(5),
+                    omega: track.omega.toPrecision(5),
+                    tanLambda: track.tanLambda.toPrecision(5),
+                    ...this.getMommentumForTrack(
+                        track.tanLambda,
+                        track.omega,
+                        track.phi0
+                    ),
+                    'e-': roundProbability(probabilities?.['e-']),
+                    'mu-': roundProbability(probabilities?.['mu-']),
+                    'pi+': roundProbability(probabilities?.['pi+']),
+                    'K+': roundProbability(probabilities?.['K+']),
+                    'p+': roundProbability(probabilities?.['p+']),
+                    deuteron: roundProbability(probabilities?.['deuteron']),
                     pos: track.pos.map((row: any) =>
                         row.map((val: any) => val * this.scale)
                     )
                 };
             }
         );
-        // const trackNum = this.data?.Tracks.length;
-        // if (trackNum !== 0) {
-        //     for (let i = 0; i < trackNum; i++) {
-        //         tracks[`Track ${i}`] = [
-        //             {
-        //                 charge: this.data.Tracks[i].charge,
-        //                 // color: track.charge ? track.charge === 1.0 ? "E33535" : "336FD1": "A6C55E",
-        //                 color: '336FD1',
-        //                 pos: this.data.Tracks[i].pos.map((row: any) =>
-        //                     row.map((val: any) => val * this.scale)
-        //                 ),
-        //                 d0: this.data.Tracks[i].d0,
-        //                 z0: this.data.Tracks[i].z0,
-        //                 phi: this.data.Tracks[i].phi0,
-        //                 omega: this.data.Tracks[i].omega,
-        //                 tanLambda: this.data.Tracks[i].tanLambda
-        //             }
-        //         ];
-        //     }
-        // }
         return tracks;
     }
 
@@ -259,24 +258,22 @@ export class Belle2Loader extends PhoenixLoader {
                     pos: particle.pos.map((row: any) =>
                         row.map((val: any) => val * this.scale)
                     ),
-                    energy: particle?.energy,
-                    momentumX: particle?.momentum_x,
-                    momentumY: particle?.momentum_y,
-                    momentumZ: particle?.momentum_z,
+                    energy: particle?.energy.toPrecision(5),
+                    momentumX: particle?.momentum_x.toPrecision(5),
+                    momentumY: particle?.momentum_y.toPrecision(5),
+                    momentumZ: particle?.momentum_z.toPrecision(5),
+                    phi: Math.atan(
+                        particle?.momentum_x / particle?.momentum_y
+                    ).toPrecision(5),
                     PDG: particle.PDG,
                     color: this.getParticleColor(particle.PDG),
-                    seen: particle?.seen
+                    ...(this.getParticleGroup(particle.PDG) !== 'Neutrinos' && {
+                        seen: particle.seen
+                    })
                 });
             }
         });
 
-        // particles['ReconstructedTrack'] = this.data?.MCParticles.map((particle: any) => ({
-        //   name: particle.name,
-        //   charge: particle.charge,
-        //   pos: particle.pos.map((row: any) => row.map((val: any) => val * this.scale)),
-        //   PDG: particle.PDG,
-        //   color: this.getParticleColor(particle.PDG)
-        // }))
         return particles;
     }
 

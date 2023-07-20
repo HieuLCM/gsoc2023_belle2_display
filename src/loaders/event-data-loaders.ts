@@ -70,7 +70,6 @@ export class Belle2Loader extends PhoenixLoader {
                 eventData[objectType] = undefined;
             }
         }
-
         return eventData;
     }
 

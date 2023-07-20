@@ -60,23 +60,19 @@ export class EventDisplayComponent implements OnInit {
             defaultView: [1600, -300, 900, 0, 0, 0],
             phoenixMenuRoot: this.phoenixMenuRoot,
             forceColourTheme: 'dark'
-            // defaultEventFile: {
-            //   eventFile: '../../assets/mdst_event.json',
-            //   eventType: 'json',
-            // },
         };
 
         this.eventDisplay.init(configuration);
 
-        const response = await fetch('../../assets/mdst_data.json');
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
+        // const response = await fetch('../../assets/mdst_data.json');
+        // if (!response.ok) {
+        //     throw new Error('Network response was not ok');
+        // }
 
-        // const eventLoader = new EventLoader('../../assets/mdst-v06-00-00.root');
+        const eventLoader = new EventLoader('../../assets/mdst-v06-00-00.root');
 
-        // const data = await eventLoader.getData('tree');
-        const data = await response.json();
+        const data = await eventLoader.getData('tree');
+        // const data = await response.json();
         const eventData = belle2Loader.getAllEventData(data);
         this.eventDisplay.parsePhoenixEvents(eventData);
 

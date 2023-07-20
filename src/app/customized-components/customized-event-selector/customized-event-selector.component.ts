@@ -28,7 +28,6 @@ export class CustomizedEventSelectorComponent implements OnInit {
             this.time = eventsInfo.eventsData[events[0]].time;
             return events;
         });
-        console.log(this.events);
     }
 
     handleChange(value: string) {

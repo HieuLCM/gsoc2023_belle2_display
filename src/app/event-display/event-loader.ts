@@ -226,6 +226,16 @@ class TEventSelector extends TSelector {
         return tracksToPIDMap;
     }
 
+    getTracksToMCParticles(data: any) {
+        const elementData: any = data['m_elements'];
+        const tracksToMCParticleMap: any = {};
+        for (let i = 0; i < elementData.length; i++) {
+            tracksToMCParticleMap[elementData[i]['m_from']] =
+                elementData[i]['m_to'][0];
+        }
+        return tracksToMCParticleMap;
+    }
+
     getPIDLikelihoods(data: any) {
         // [<type: e->, <type: mu->, <type: pi+>, <type: K+>, <type: p+>, <type: deuteron>]
         const stableParticles = ['e-', 'mu-', 'pi+', 'K+', 'p+', 'deuteron'];
@@ -292,6 +302,13 @@ class TEventSelector extends TSelector {
                 )
             });
         }
+        if (this.branch === 'TracksToMCParticles') {
+            this.branchData.push({
+                TracksToMCParticles: this.getTracksToMCParticles(
+                    this.tgtobj['TracksToMCParticles']
+                )
+            });
+        }
         if (this.branch === 'PIDLikelihoods') {
             this.branchData.push({
                 PIDLikelihoods: this.getPIDLikelihoods(
@@ -328,6 +345,7 @@ export class EventLoader extends PhoenixLoader {
             'Tracks',
             'TrackFitResults',
             'TracksToPIDLikelihoods',
+            'TracksToMCParticles',
             'PIDLikelihoods',
             'MCParticles',
             'EventMetaData'
@@ -433,13 +451,15 @@ export class EventLoader extends PhoenixLoader {
             for (let j = 0; j < eventData['Tracks'].length; j++) {
                 const trackFitIndex = eventData['Tracks'][j]['trackFitIndex'];
                 const PIDIndex = eventData['TracksToPIDLikelihoods'][j];
+                const MCParticleIndex = eventData['TracksToMCParticles'][j];
                 eventData['Tracks'][j] = {
                     ...eventData['Tracks'][j],
                     pos: this.getTrackPos(
                         eventData['TrackFitResults'][trackFitIndex]
                     ),
                     ...eventData['TrackFitResults'][trackFitIndex],
-                    ...eventData['PIDLikelihoods'][PIDIndex]
+                    ...eventData['PIDLikelihoods'][PIDIndex],
+                    MCParticleIndex
                 };
             }
         }

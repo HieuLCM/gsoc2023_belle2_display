@@ -14,6 +14,7 @@ import { LoadingComponent } from './customized-components/loading/loading.compon
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
+
 import { CustomizedEventSelectorComponent } from './customized-components/customized-event-selector/customized-event-selector.component';
 import { IOEventComponent } from './customized-components/io-event/io-event.component';
 import { IODialogComponent } from './customized-components/io-event/io-dialog/io-dialog.component';
@@ -32,7 +33,7 @@ import { ObjectSelectorOverlayComponent } from './customized-components/object-s
         IODialogComponent,
         HomeComponent,
         ObjectSelectorComponent,
-        ObjectSelectorOverlayComponent
+        ObjectSelectorOverlayComponent,
     ],
     imports: [
         BrowserModule,

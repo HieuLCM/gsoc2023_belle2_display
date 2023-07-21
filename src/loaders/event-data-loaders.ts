@@ -232,6 +232,7 @@ export class Belle2Loader extends PhoenixLoader {
             22: 'gamma',
             130: 'K_L0',
             211: 'pi+',
+            111: "pi0",
             2112: 'n0',
             '-2112': 'anti-n0',
             2212: 'p+',
@@ -245,7 +246,7 @@ export class Belle2Loader extends PhoenixLoader {
             '-2212': 'anti-p-'
         };
         this.data?.MCParticles.forEach((particle: any) => {
-            if (particle?.seen?.length) {
+            if (particle?.seen !== "0" && particle?.seen?.length) {
                 const groupName = this.getParticleGroup(particle.PDG);
                 if (!collection.includes(groupName)) {
                     collection.push(groupName);
@@ -258,9 +259,6 @@ export class Belle2Loader extends PhoenixLoader {
                         particleNames[particle.PDG] ??
                         'Unknown particle',
                     charge: particle.charge,
-                    pos: particle.pos.map((row: any) =>
-                        row.map((val: any) => val * this.scale)
-                    ),
                     energy: particle?.energy.toPrecision(5),
                     momentumX: particle?.momentum_x.toPrecision(5),
                     momentumY: particle?.momentum_y.toPrecision(5),
@@ -272,7 +270,10 @@ export class Belle2Loader extends PhoenixLoader {
                     color: this.getParticleColor(particle.PDG),
                     ...(this.getParticleGroup(particle.PDG) !== 'Neutrinos' && {
                         seen: particle.seen
-                    })
+                    }),
+                    pos: particle.pos.map((row: any) =>
+                        row.map((val: any) => val * this.scale)
+                    )
                 });
             }
         });
@@ -322,6 +323,7 @@ export class Belle2Loader extends PhoenixLoader {
             case 2112:
             case -2112:
             case 130:
+            case 111:
                 return 'Neutral particles';
             case 321:
             case -321:
@@ -336,7 +338,6 @@ export class Belle2Loader extends PhoenixLoader {
             case -13:
             case 211:
             case -211:
-            case 111:
                 return 'Charged particles';
             case 12:
             case 14:

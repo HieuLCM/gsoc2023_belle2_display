@@ -57,6 +57,7 @@ class TEventSelector extends TSelector {
             case 2112:
             case -2112:
             case 130:
+            case 111:
                 return 0;
             case 321:
             case 2212:
@@ -65,7 +66,6 @@ class TEventSelector extends TSelector {
             case -11:
             case -13:
             case 211:
-            case 111:
                 return 1;
             case -321:
             case -2212:
@@ -347,6 +347,8 @@ export class EventLoader extends PhoenixLoader {
             'TrackFitResults',
             'TracksToPIDLikelihoods',
             'TracksToMCParticles',
+            'TracksToMCParticles',
+            'TracksToMCParticles',
             'PIDLikelihoods',
             'MCParticles',
             'EventMetaData'
@@ -464,7 +466,6 @@ export class EventLoader extends PhoenixLoader {
                 };
             }
         }
-        console.log(this.fileData)
         // Save fileData by input the appropriate onHandleData function
         onHandleData(this.fileData);
         return this.fileData;

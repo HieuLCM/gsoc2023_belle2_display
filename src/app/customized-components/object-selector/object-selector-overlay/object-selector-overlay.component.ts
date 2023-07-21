@@ -1,9 +1,7 @@
 import {
     Component,
     OnInit,
-    Input,
-    OnChanges,
-    SimpleChanges
+    Input
 } from '@angular/core';
 import { EventDisplayService } from 'phoenix-ui-components';
 

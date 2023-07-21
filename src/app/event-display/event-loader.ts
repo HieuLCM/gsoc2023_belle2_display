@@ -83,7 +83,7 @@ class TEventSelector extends TSelector {
         return [
             ...data
                 .filter(particle => particle['m_seenIn']['m_bits'])
-                .map((particle: any) => {
+                .map((particle: any, index: number) => {
                     const charge = this.getParticleCharge(particle['m_pdg']);
                     const x0 = particle['m_productionVertex_x'];
                     const y0 = particle['m_productionVertex_y'];
@@ -179,6 +179,7 @@ class TEventSelector extends TSelector {
                     }
 
                     return {
+                        index,
                         pos: points,
                         PDG: particle['m_pdg'],
                         charge: charge,
@@ -194,7 +195,8 @@ class TEventSelector extends TSelector {
 
     getTracks(data: any) {
         return [
-            ...data.map(track => ({
+            ...data.map((track: any, index: number) => ({
+                index,
                 trackFitIndex: track['m_trackFitIndices'].find(i => i >= 0)
             }))
         ];
@@ -202,7 +204,7 @@ class TEventSelector extends TSelector {
 
     getTrackFitResults(data: any) {
         return [
-            ...data.map(track => ({
+            ...data.map((track: any) => ({
                 d0: track['m_tau'][0],
                 phi0: track['m_tau'][1],
                 omega: track['m_tau'][2],

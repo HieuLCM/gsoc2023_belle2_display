@@ -175,6 +175,7 @@ export class Belle2Loader extends PhoenixLoader {
                 };
                 const probabilities = this.getProbabilities(logL);
                 return {
+                    index: track.index,
                     charge: track.charge,
                     color: '336FD1',
                     d0: track.d0.toPrecision(5),
@@ -193,6 +194,7 @@ export class Belle2Loader extends PhoenixLoader {
                     'K+': roundProbability(probabilities?.['K+']),
                     'p+': roundProbability(probabilities?.['p+']),
                     deuteron: roundProbability(probabilities?.['deuteron']),
+                    MCParticle: track.MCParticleIndex,
                     pos: track.pos.map((row: any) =>
                         row.map((val: any) => val * this.scale)
                     )
@@ -231,6 +233,7 @@ export class Belle2Loader extends PhoenixLoader {
             130: 'K_L0',
             211: 'pi+',
             2112: 'n0',
+            '-2112': 'anti-n0',
             2212: 'p+',
             '-11': 'e+',
             '-12': 'anti-nu_e',
@@ -249,6 +252,7 @@ export class Belle2Loader extends PhoenixLoader {
                     particles[groupName] = [];
                 }
                 particles[groupName].push({
+                    index: particle.index,
                     name:
                         particle.name ??
                         particleNames[particle.PDG] ??

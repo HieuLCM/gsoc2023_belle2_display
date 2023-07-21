@@ -18,6 +18,8 @@ import { CustomizedEventSelectorComponent } from './customized-components/custom
 import { IOEventComponent } from './customized-components/io-event/io-event.component';
 import { IODialogComponent } from './customized-components/io-event/io-dialog/io-dialog.component';
 import { HomeComponent } from './home/home.component';
+import { ObjectSelectorComponent } from './customized-components/object-selector/object-selector.component';
+import { ObjectSelectorOverlayComponent } from './customized-components/object-selector/object-selector-overlay/object-selector-overlay.component';
 
 @NgModule({
     declarations: [
@@ -28,7 +30,9 @@ import { HomeComponent } from './home/home.component';
         CustomizedEventSelectorComponent,
         IOEventComponent,
         IODialogComponent,
-        HomeComponent
+        HomeComponent,
+        ObjectSelectorComponent,
+        ObjectSelectorOverlayComponent
     ],
     imports: [
         BrowserModule,

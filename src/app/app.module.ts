@@ -33,7 +33,7 @@ import { ObjectSelectorOverlayComponent } from './customized-components/object-s
         IODialogComponent,
         HomeComponent,
         ObjectSelectorComponent,
-        ObjectSelectorOverlayComponent,
+        ObjectSelectorOverlayComponent
     ],
     imports: [
         BrowserModule,

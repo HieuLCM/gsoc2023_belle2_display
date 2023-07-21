@@ -11,6 +11,7 @@ import {
     PresetView
 } from 'phoenix-event-display';
 import { Belle2Loader } from 'src/loaders/event-data-loaders';
+import * as saveAs from 'file-saver';
 
 @Component({
     selector: 'app-event-display',
@@ -64,15 +65,15 @@ export class EventDisplayComponent implements OnInit {
 
         this.eventDisplay.init(configuration);
 
-        // const response = await fetch('../../assets/mdst_data.json');
-        // if (!response.ok) {
-        //     throw new Error('Network response was not ok');
-        // }
+        const response = await fetch('../../assets/mdst_data.json');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
 
-        const eventLoader = new EventLoader('../../assets/mdst-v06-00-00.root');
+        // const eventLoader = new EventLoader('../../assets/mdst-v06-00-00.root');
 
-        const data = await eventLoader.getData('tree');
-        // const data = await response.json();
+        // const data = await eventLoader.getData('tree');
+        const data = await response.json();
         const eventData = belle2Loader.getAllEventData(data);
         this.eventDisplay.parsePhoenixEvents(eventData);
 

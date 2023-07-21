@@ -158,24 +158,33 @@ export class Belle2Loader extends PhoenixLoader {
             (track: any, index: number) => {
                 const logL = {
                     'e-':
-                        track['e-'] ?? this.data?.PIDLikelihoods?.[index]['e-'],
+                        track['e-'] ??
+                        this.data?.PIDLikelihoods?.[index]?.['e-'] ??
+                        -100,
                     'mu-':
                         track['mu-'] ??
-                        this.data?.PIDLikelihoods?.[index]['mu-'],
+                        this.data?.PIDLikelihoods?.[index]?.['mu-'] ??
+                        -100,
                     'pi+':
                         track['pi+'] ??
-                        this.data?.PIDLikelihoods?.[index]['pi+'],
+                        this.data?.PIDLikelihoods?.[index]?.['pi+'] ??
+                        -100,
                     'K+':
-                        track['K+'] ?? this.data?.PIDLikelihoods?.[index]['K+'],
+                        track['K+'] ??
+                        this.data?.PIDLikelihoods?.[index]?.['K+'] ??
+                        -100,
                     'p+':
-                        track['p+'] ?? this.data?.PIDLikelihoods?.[index]['p+'],
+                        track['p+'] ??
+                        this.data?.PIDLikelihoods?.[index]?.['p+'] ??
+                        -100,
                     deuteron:
                         track['deuteron'] ??
-                        this.data?.PIDLikelihoods?.[index]['deuteron']
+                        this.data?.PIDLikelihoods?.[index]?.['deuteron'] ??
+                        -100
                 };
                 const probabilities = this.getProbabilities(logL);
                 return {
-                    index: track.index,
+                    index: track.index ?? index,
                     charge: track.charge,
                     color: '336FD1',
                     d0: track.d0.toPrecision(5),
@@ -188,13 +197,15 @@ export class Belle2Loader extends PhoenixLoader {
                         track.omega,
                         track.phi0
                     ),
+                    ...(track?.MCParticleIndex > 0 && {
+                        MCParticle: track?.MCParticleIndex
+                    }),
                     'e-': roundProbability(probabilities?.['e-']),
                     'mu-': roundProbability(probabilities?.['mu-']),
                     'pi+': roundProbability(probabilities?.['pi+']),
                     'K+': roundProbability(probabilities?.['K+']),
                     'p+': roundProbability(probabilities?.['p+']),
                     deuteron: roundProbability(probabilities?.['deuteron']),
-                    MCParticle: track.MCParticleIndex,
                     pos: track.pos.map((row: any) =>
                         row.map((val: any) => val * this.scale)
                     )
@@ -232,7 +243,7 @@ export class Belle2Loader extends PhoenixLoader {
             22: 'gamma',
             130: 'K_L0',
             211: 'pi+',
-            111: "pi0",
+            111: 'pi0',
             2112: 'n0',
             '-2112': 'anti-n0',
             2212: 'p+',
@@ -245,15 +256,15 @@ export class Belle2Loader extends PhoenixLoader {
             '-321': 'K-',
             '-2212': 'anti-p-'
         };
-        this.data?.MCParticles.forEach((particle: any) => {
-            if (particle?.seen !== "0" && particle?.seen?.length) {
+        this.data?.MCParticles.forEach((particle: any, index: number) => {
+            if (particle?.seen !== '0' && particle?.seen?.length) {
                 const groupName = this.getParticleGroup(particle.PDG);
                 if (!collection.includes(groupName)) {
                     collection.push(groupName);
                     particles[groupName] = [];
                 }
                 particles[groupName].push({
-                    index: particle.index,
+                    index: particle.index ?? index,
                     name:
                         particle.name ??
                         particleNames[particle.PDG] ??
@@ -263,6 +274,9 @@ export class Belle2Loader extends PhoenixLoader {
                     momentumX: particle?.momentum_x.toPrecision(5),
                     momentumY: particle?.momentum_y.toPrecision(5),
                     momentumZ: particle?.momentum_z.toPrecision(5),
+                    ...(particle?.trackIndex > 0 && {
+                        Track: particle.trackIndex
+                    }),
                     phi: Math.atan(
                         particle?.momentum_x / particle?.momentum_y
                     ).toPrecision(5),

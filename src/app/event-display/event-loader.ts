@@ -81,114 +81,108 @@ class TEventSelector extends TSelector {
 
     getMCParticles(data: any) {
         return [
-            ...data
-                .map((particle: any, index: number) => {
-                    const charge = this.getParticleCharge(particle['m_pdg']);
-                    const x0 = particle['m_productionVertex_x'];
-                    const y0 = particle['m_productionVertex_y'];
-                    const z0 = particle['m_productionVertex_z'];
+            ...data.map((particle: any, index: number) => {
+                const charge = this.getParticleCharge(particle['m_pdg']);
+                const x0 = particle['m_productionVertex_x'];
+                const y0 = particle['m_productionVertex_y'];
+                const z0 = particle['m_productionVertex_z'];
 
-                    const xe = particle['m_decayVertex_x'];
-                    const ye = particle['m_decayVertex_y'];
-                    const ze = particle['m_decayVertex_z'];
+                const xe = particle['m_decayVertex_x'];
+                const ye = particle['m_decayVertex_y'];
+                const ze = particle['m_decayVertex_z'];
 
-                    const px = particle['m_momentum_x'];
-                    const py = particle['m_momentum_y'];
-                    const pz = particle['m_momentum_z'];
+                const px = particle['m_momentum_x'];
+                const py = particle['m_momentum_y'];
+                const pz = particle['m_momentum_z'];
 
-                    let points: [number, number, number][] = [];
-                    const rho = Math.sqrt(px * px + py * py) / 0.0045; // approximation and only for charge != 0
-                    const tanLambda = pz / Math.sqrt(px * px + py * py);
-                    const phi0 = Math.atan(py / px);
+                let points: [number, number, number][] = [];
+                const rho = Math.sqrt(px * px + py * py) / 0.0045; // approximation and only for charge != 0
+                const tanLambda = pz / Math.sqrt(px * px + py * py);
+                const phi0 = Math.atan(py / px);
 
-                    if (charge === 0) {
-                        if (
-                            Math.sqrt(xe * xe + ye * ye) < 200 &&
-                            ze < 280 &&
-                            ze > -150
-                        ) {
-                            points = [
-                                [x0, y0, z0],
-                                [xe, ye, ze]
-                            ];
-                        } else {
-                            const deltaX = Array.from(
-                                { length: 300 },
-                                (_, i) => 0.5 + 0.5 * i
-                            );
-                            const deltaY = deltaX.map(
-                                deltaX => (deltaX * py) / px
-                            );
-                            const deltaZ = deltaX.map(
-                                (deltaX, i) =>
-                                    Math.sqrt(
-                                        deltaX * deltaX + deltaY[i] * deltaY[i]
-                                    ) * tanLambda
-                            );
-
-                            points.push([x0, y0, z0]);
-
-                            for (let i = 0; i < deltaX.length; i++) {
-                                const x = x0 + deltaX[i];
-                                const y = y0 + deltaY[i];
-                                const z = z0 + deltaZ[i];
-                                points.push([x, y, z]);
-
-                                if (
-                                    Math.sqrt(x * x + y * y) > 200 ||
-                                    z > 280 ||
-                                    z < -150
-                                ) {
-                                    break;
-                                }
-                            }
-                        }
+                if (charge === 0) {
+                    if (
+                        Math.sqrt(xe * xe + ye * ye) < 200 &&
+                        ze < 280 &&
+                        ze > -150
+                    ) {
+                        points = [
+                            [x0, y0, z0],
+                            [xe, ye, ze]
+                        ];
                     } else {
-                        const xa = x0 + rho * Math.cos(phi0 - Math.PI / 2);
-                        const ya = y0 + rho * Math.sin(phi0 - Math.PI / 2);
-                        const phis = Array.from(
-                            {
-                                length:
-                                    Math.floor((Math.PI - 0.015) / 0.015) + 1
-                            },
-                            (_, i) => 0.015 + 0.015 * i
+                        const deltaX = Array.from(
+                            { length: 300 },
+                            (_, i) => 0.5 + 0.5 * i
+                        );
+                        const deltaY = deltaX.map(deltaX => (deltaX * py) / px);
+                        const deltaZ = deltaX.map(
+                            (deltaX, i) =>
+                                Math.sqrt(
+                                    deltaX * deltaX + deltaY[i] * deltaY[i]
+                                ) * tanLambda
                         );
 
                         points.push([x0, y0, z0]);
-                        for (const phi of phis) {
-                            const x =
-                                xa -
-                                rho *
-                                    Math.cos(phi0 - Math.PI / 2 - charge * phi); //opposite with Python
-                            const y =
-                                ya -
-                                rho *
-                                    Math.sin(phi0 - Math.PI / 2 - charge * phi);
-                            const z = z0 + Math.abs(rho) * tanLambda * phi;
+
+                        for (let i = 0; i < deltaX.length; i++) {
+                            const x = x0 + deltaX[i];
+                            const y = y0 + deltaY[i];
+                            const z = z0 + deltaZ[i];
                             points.push([x, y, z]);
 
                             if (
-                                Math.sqrt(x * x + y * y) > 150 ||
-                                z > 300 ||
-                                z < -200
+                                Math.sqrt(x * x + y * y) > 200 ||
+                                z > 280 ||
+                                z < -150
                             ) {
                                 break;
                             }
                         }
                     }
+                } else {
+                    const xa = x0 + rho * Math.cos(phi0 - Math.PI / 2);
+                    const ya = y0 + rho * Math.sin(phi0 - Math.PI / 2);
+                    const phis = Array.from(
+                        {
+                            length: Math.floor((Math.PI - 0.015) / 0.015) + 1
+                        },
+                        (_, i) => 0.015 + 0.015 * i
+                    );
 
-                    return {
-                        index,
-                        pos: points,
-                        PDG: particle['m_pdg'],
-                        charge: charge,
-                        momentum_x: px,
-                        momentum_y: py,
-                        momentum_z: pz,
-                        energy: particle['m_energy'],
-                        seen: `${particle['m_seenIn']['m_bits']}`
-                    };
-                })
+                    points.push([x0, y0, z0]);
+                    for (const phi of phis) {
+                        const x =
+                            xa -
+                            rho * Math.cos(phi0 - Math.PI / 2 - charge * phi); //opposite with Python
+                        const y =
+                            ya -
+                            rho * Math.sin(phi0 - Math.PI / 2 - charge * phi);
+                        const z = z0 + Math.abs(rho) * tanLambda * phi;
+                        points.push([x, y, z]);
+
+                        if (
+                            Math.sqrt(x * x + y * y) > 150 ||
+                            z > 300 ||
+                            z < -200
+                        ) {
+                            break;
+                        }
+                    }
+                }
+
+                return {
+                    index,
+                    pos: points,
+                    PDG: particle['m_pdg'],
+                    charge: charge,
+                    momentum_x: px,
+                    momentum_y: py,
+                    momentum_z: pz,
+                    energy: particle['m_energy'],
+                    seen: `${particle['m_seenIn']['m_bits']}`
+                };
+            })
         ];
     }
 
@@ -463,6 +457,10 @@ export class EventLoader extends PhoenixLoader {
                     ...eventData['TrackFitResults'][trackFitIndex],
                     ...eventData['PIDLikelihoods'][PIDIndex],
                     MCParticleIndex
+                };
+                eventData['MCParticles'][MCParticleIndex] = {
+                    ...eventData['MCParticles'][MCParticleIndex],
+                    trackIndex: j
                 };
             }
         }

@@ -47,9 +47,6 @@ export class ObjectSelectorOverlayComponent implements OnInit {
                 );
                 if (selectedParticle) {
                     this.eventDisplay.highlightObject(selectedParticle.uuid);
-                    this.eventDisplay
-                        .getActiveObjectId()
-                        .update(selectedParticle.uuid);
                     break;
                 }
             }

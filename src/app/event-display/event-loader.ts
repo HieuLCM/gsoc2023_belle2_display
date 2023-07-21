@@ -82,7 +82,6 @@ class TEventSelector extends TSelector {
     getMCParticles(data: any) {
         return [
             ...data
-                .filter(particle => particle['m_seenIn']['m_bits'])
                 .map((particle: any, index: number) => {
                     const charge = this.getParticleCharge(particle['m_pdg']);
                     const x0 = particle['m_productionVertex_x'];
@@ -465,7 +464,7 @@ export class EventLoader extends PhoenixLoader {
                 };
             }
         }
-
+        console.log(this.fileData)
         // Save fileData by input the appropriate onHandleData function
         onHandleData(this.fileData);
         return this.fileData;

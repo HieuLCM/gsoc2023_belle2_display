@@ -47,7 +47,6 @@ export class ObjectSelectorOverlayComponent implements OnInit {
                         .update(selectedParticle.uuid);
                     // A non-smart way to update the overlay
                     this.selectedObject.name = 'MCParticle';
-                    this.selectedObject.name = 'Track';
                     this.selectedObject.attributes = [];
                     const prettyParams =
                         PrettySymbols.getPrettyParams(selectedParticle);

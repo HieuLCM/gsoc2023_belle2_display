@@ -77,17 +77,17 @@
                 <img src="assets/icons/gltf.svg" alt="" /> Load .gltf
             </button>
 
-            <!-- <input
-        #rootFileInput
-        type="file"
-        tabindex="-1"
-        class="file-input"
-        accept=".root"
-        (change)="handleROOTInput($event.target.files)"
-      />
-      <button class="file-input-button" (click)="rootFileInput.click()">
-        <img src="assets/icons/file-import.svg" alt="" /> Load .root
-      </button> -->
+            <input
+                #rootDetectorFileInput
+                type="file"
+                tabindex="-1"
+                class="file-input"
+                accept=".root"
+                (change)="handleROOTDetectorInput($event.target.files)"
+            />
+            <button class="file-input-button" (click)="rootDetectorFileInput.click()">
+                <img src="assets/icons/file-import.svg" alt="" /> Load .root
+            </button>
 
             <input
                 #rootJSONFileInput
@@ -105,7 +105,7 @@
             </button>
         </div>
 
-        <p class="text-center"><b>Scene</b></p>
+        <!-- <p class="text-center"><b>Scene</b></p>
 
         <div class="row centered">
             <button
@@ -140,7 +140,28 @@
             >
                 <img src="assets/icons/obj.svg" alt="" /> Save OBJ
             </button>
+        </div> -->
+        <p class="text-center"><b>Convertor</b></p>
+        <div class="row centered">
+
+            <input
+                #jsonConvertor
+                type="file"
+                tabindex="-1"
+                class="file-input"
+                accept=".root"
+                (change)="handleJSONConvertor($event.target.files)"
+            />
+            <button
+                class="file-input-button"
+                id="importScene"
+                (click)="jsonConvertor.click()"
+            >
+                <img src="assets/icons/file-import.svg" alt="" /> .root to .json
+            </button>
+
         </div>
+        
     </div>
 
     <div mat-dialog-actions align="end">

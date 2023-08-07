@@ -20,3 +20,4 @@ The **Event Display** is preferred for uploading and displaying events from .roo
 
    event_display
    detector
+   legend

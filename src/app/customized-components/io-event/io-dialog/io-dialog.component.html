@@ -43,7 +43,8 @@
                     class="file-input-button"
                     (click)="rootFileInput.click()"
                 >
-                    <img src="assets/icons/file-import.svg" alt="" /> Load .root (mdst)
+                    <img src="assets/icons/file-import.svg" alt="" /> Load .root
+                    (mdst)
                 </button>
             </div>
         </div>
@@ -85,7 +86,10 @@
                 accept=".root"
                 (change)="handleROOTDetectorInput($event.target.files)"
             />
-            <button class="file-input-button" (click)="rootDetectorFileInput.click()">
+            <button
+                class="file-input-button"
+                (click)="rootDetectorFileInput.click()"
+            >
                 <img src="assets/icons/file-import.svg" alt="" /> Load .root
             </button>
 
@@ -143,7 +147,6 @@
         </div> -->
         <p class="text-center"><b>Convertor</b></p>
         <div class="row centered">
-
             <input
                 #jsonConvertor
                 type="file"
@@ -159,9 +162,7 @@
             >
                 <img src="assets/icons/file-import.svg" alt="" /> .root to .json
             </button>
-
         </div>
-        
     </div>
 
     <div mat-dialog-actions align="end">

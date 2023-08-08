@@ -12,5 +12,5 @@ For usage and manipulation, please check out the :doc:`user` section.
    :caption: Contents:
 
    ./developer/installation.rst
-   ./developer/phoenix.rst
+   ./developer/modules.rst
    ./developer/event_display.rst

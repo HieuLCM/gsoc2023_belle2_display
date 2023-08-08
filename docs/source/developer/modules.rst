@@ -1,8 +1,8 @@
 Framework and Tools
 ===================
 
-Phoenix Framework
------------------
+Phoenix
+-------
 
 The Belle II display web application is built based on Phoenix, a TypeScript-based event display framework. If you are starting to contribute to or modify the web application for the Belle II event display, it is strongly recommended to familiarize yourself with the Phoenix framework and how to use it.
 

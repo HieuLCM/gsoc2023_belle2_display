@@ -44,6 +44,3 @@ Essentially, three main pages exist: the homepage, event display, and detector d
 
 As this project is built on Phoenix, most UI components used here are obtained from ``phoenix-ui-components``, such as **Display Options** or the tools in the **UI Menu**. However, due to the unique characteristics of the Belle II event display, some tools (e.g., event selector, event import/export) need customization. To create customized components, it is essential to study existing Phoenix UI components and their usage. This is necessary because, when developing new components, you will need to seamlessly integrate them into the web framework built on Phoenix. In short, skills in handling both Angular and Phoenix are required.
 
-Event Display Configuration
----------------------------
-
